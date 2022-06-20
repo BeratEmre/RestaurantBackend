@@ -32,7 +32,8 @@ namespace Business.DependencyResolvers
             builder.RegisterType<SweetManager>().As<ISweetService>().SingleInstance();
             builder.RegisterType<SweetDal>().As<ISweetDal>().SingleInstance();
 
-
+            builder.RegisterType<MenuManager>().As<IMenuService>().SingleInstance();
+            builder.RegisterType<MenuDal>().As<IMenuDal>().SingleInstance();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

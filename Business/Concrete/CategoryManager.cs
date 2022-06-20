@@ -43,5 +43,48 @@ namespace Business.Concrete
             return new SuccessDataResult<Category>(category, Messages.Update("İçecek"));
         }
     }
+    public class MenuManager : IMenuService
+    {
+        IMenuDal _menuDal;
+        public MenuManager(IMenuDal menuDal)
+        {
+            _menuDal = menuDal;
+        }
+        public Result Add(Menu Menu)
+        {
+            _menuDal.Add(Menu);
+            return new Result(true, Messages.Add("İçecek"));
+        }
 
+        public DataResult<List<Menu>> GetAll()
+        {
+            List<Menu> menus = _menuDal.GetAll();
+            if (menus == null)
+                return new ErrorDataResult<List<Menu>>(menus);
+
+            return new SuccessDataResult<List<Menu>>(menus, Messages.GetAll("Menu"));
+        }
+        public DataResult<List<Menu>> GetMenus()
+        {
+            List<Menu> menus = _menuDal.GetMenus();
+            if (menus == null)
+                return new ErrorDataResult<List<Menu>>(menus);
+            return new SuccessDataResult<List<Menu>>(menus, Messages.GetAll("Menu"));
+        }
+        public DataResult<Menu> GetById(int id)
+        {
+            Menu Menu = _menuDal.Get(g => g.MenuId == id);
+            if (Menu != null)
+                return new SuccessDataResult<Menu>(Menu, Messages.GetById("Menu"));
+            return new ErrorDataResult<Menu>(Messages.GetByIdErr("Menu"));
+        }
+
+     
+
+        public DataResult<Menu> Update(Menu Menu)
+        {
+            _menuDal.Update(Menu);
+            return new SuccessDataResult<Menu>(Menu, Messages.Update("Menu"));
+        }
+    }
 }
