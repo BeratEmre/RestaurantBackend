@@ -1,21 +1,31 @@
 ﻿using Business.Abstract;
+using Core.Helpers.FileHelper;
 using Entity.Entities;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Controllers
 {
+ 
+
     [Route("api/[controller]")]
     [ApiController]
     public class DrinksController : ControllerBase
     {
+      
         IDrinkService _drinkService;
-        public DrinksController(IDrinkService drinkService)
+        public static IWebHostEnvironment _environment;
+   
+        public DrinksController(IDrinkService drinkService, IWebHostEnvironment environment)
         {
             _drinkService = drinkService;
+            _environment = environment;
         }
 
         [HttpPost("add")]
@@ -28,14 +38,22 @@ namespace API.Controllers
             return BadRequest(result);
         }
         [HttpPost("update")]
-        public IActionResult Update(Drink drink)
+        public IActionResult Update([FromForm] DrinkFormData formData)
         {
+
+            var imgUrl = FileCreate.FileSave(formData.FormFile, _environment.WebRootPath + "\\imgs\\drinks\\");
+
+            Drink drink = new Drink() { Description = formData.Description, DrinkId = formData.DrinkId, ImgUrl = imgUrl, Name = formData.Name, Price = formData.Price };
+
+
             var result = _drinkService.Update(drink);
             if (result.Success)
                 return Ok(result);
 
             return BadRequest(result);
         }
+
+
 
         [HttpPost("getbyid")]
         public IActionResult GetById(int id)

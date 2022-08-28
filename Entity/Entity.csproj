@@ -6,6 +6,11 @@
 
   <ItemGroup>
     <Folder Include="DTOs\" />
+    <Folder Include="Helpers\Imgs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
   </ItemGroup>
 
   <ItemGroup>

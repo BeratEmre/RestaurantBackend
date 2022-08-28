@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,6 +41,7 @@ namespace API
             services.AddControllers();
             services.AddRazorPages();
             services.AddMvc();
+            services.AddDirectoryBrowser();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("SwaggerApi", new OpenApiInfo {Version="v1",Title="Swagger Api", Description="" });
@@ -70,7 +74,21 @@ namespace API
             // with a named pocili
             app.UseCors("AllowOrigin");
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseStaticFiles(); // For the wwwroot folder
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\imgs")),
+                RequestPath = new PathString("/imgs")
+            });
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\imgs")),
+                RequestPath = new PathString("/imgs")
+            });
 
             app.UseRouting();
 
