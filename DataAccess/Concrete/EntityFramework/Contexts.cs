@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-
+using Core.Entities.concrete;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -19,6 +19,9 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Sweet> Sweets { get; set; }
         public DbSet<Menu> Menus { get; set; }
+        public DbSet<User> Users{ get; set; }
+        public DbSet<OperationClaim> OperationClaims{ get; set; }
+        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -5,6 +5,10 @@ namespace Entity.Entities
     public class Menu : IEntity
     {
         public int MenuId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string ImgUrl { get; set; }
+        public double Price { get; set; }
         public int FoodId { get; set; }
         public Food Food { get; set; }
         public int DrinkId { get; set; }

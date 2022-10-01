@@ -12,8 +12,6 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
- 
-
     [Route("api/[controller]")]
     [ApiController]
     public class DrinksController : ControllerBase
@@ -29,8 +27,14 @@ namespace API.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Drink drink)
+        public IActionResult Add([FromForm] DrinkFormData formData)
         {
+            string imgUrl = "";
+            if (formData.FormFile!=null)
+                 imgUrl = Core.Helpers.FileHelper.File.FileSave(formData.FormFile, _environment.WebRootPath + "\\imgs\\drinks\\");
+
+            Drink drink = new Drink() { Description = formData.Description, DrinkId = formData.DrinkId, ImgUrl = imgUrl, Name = formData.Name, Price = formData.Price };
+
             var result = _drinkService.Add(drink);
             if (result.Success)
                 return Ok(result);
@@ -40,8 +44,9 @@ namespace API.Controllers
         [HttpPost("update")]
         public IActionResult Update([FromForm] DrinkFormData formData)
         {
-
-            var imgUrl = FileCreate.FileSave(formData.FormFile, _environment.WebRootPath + "\\imgs\\drinks\\");
+            string imgUrl = "";
+            if (formData.FormFile != null)
+                imgUrl = Core.Helpers.FileHelper.File.FileSave(formData.FormFile, _environment.WebRootPath + "\\imgs\\drinks\\");
 
             Drink drink = new Drink() { Description = formData.Description, DrinkId = formData.DrinkId, ImgUrl = imgUrl, Name = formData.Name, Price = formData.Price };
 
@@ -69,6 +74,26 @@ namespace API.Controllers
         public IActionResult GetAll()
         {
             var result = _drinkService.GetAll();
+            if (result.Success)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("GetKeyValue")]
+        public IActionResult GetKeyValue()
+        {
+            var result = _drinkService.GetKeyValue();
+            if (result.Success)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpPost("Remove")]
+        public IActionResult Remove(int id)
+        {
+            var result = _drinkService.RemoveDrink(id);
             if (result.Success)
                 return Ok(result);
 

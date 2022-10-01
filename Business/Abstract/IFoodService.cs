@@ -10,5 +10,7 @@ namespace Business.Abstract
         DataResult<Food> Update(Food food);
         DataResult<List<Food>> GetAll();
         DataResult<Food> GetById(int id);
+        DataResult<Food> RemoveFood(int id);
+        DataResult<List<KeyValue>> GetKeyValue();
     }
 }

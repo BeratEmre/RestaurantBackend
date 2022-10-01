@@ -9,6 +9,7 @@ using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
+using Core.Utilities.Security.Jwt;
 
 namespace Business.DependencyResolvers
 {
@@ -17,6 +18,9 @@ namespace Business.DependencyResolvers
 
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<CategoryManager>().As<ICategoryService>().SingleInstance();
+            builder.RegisterType<CategoryDal>().As<ICategoryDal>().SingleInstance();
+
             builder.RegisterType<DrinkManager>().As<IDrinkService>().SingleInstance();
             builder.RegisterType<DrinkDal>().As<IDrinkDal>().SingleInstance();
 
@@ -33,7 +37,14 @@ namespace Business.DependencyResolvers
             builder.RegisterType<SweetDal>().As<ISweetDal>().SingleInstance();
 
             builder.RegisterType<MenuManager>().As<IMenuService>().SingleInstance();
-            builder.RegisterType<MenuDal>().As<IMenuDal>().SingleInstance();
+            builder.RegisterType<MenuDal>().As<IMenuDal>().SingleInstance();///     private IUserService _userService;        private ITokenHelper _tokenHelper;
+
+            builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
+            builder.RegisterType<UserDal>().As<IUserDal>().SingleInstance();
+
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
+
+            builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

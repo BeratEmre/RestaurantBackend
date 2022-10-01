@@ -4,6 +4,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Entities;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Business.Concrete
 {
@@ -42,6 +43,29 @@ namespace Business.Concrete
             _sweetDal.Update(sweet);
             return new SuccessDataResult<Sweet>(sweet, Messages.Update("Tatlı"));
         }
-    }
 
+        public DataResult<Sweet> RemoveFood(int id)
+        {
+            Sweet removingSweet = _sweetDal.Get(d => d.SweetId == id);
+            if (_sweetDal.Delete(removingSweet))
+                return new SuccessDataResult<Sweet>(removingSweet, Messages.Deleting(removingSweet.Name));
+            return new ErrorDataResult<Sweet>(removingSweet, Messages.NotWaitingErr(""));
+        }
+        public DataResult<Sweet> RemoveSweet(int id)
+        {
+            Sweet removingSweet = _sweetDal.Get(d => d.SweetId == id);
+            if (_sweetDal.Delete(removingSweet))
+                return new SuccessDataResult<Sweet>(removingSweet, Messages.Deleting(removingSweet.Name));
+            return new ErrorDataResult<Sweet>(removingSweet, Messages.NotWaitingErr(""));
+        }
+
+        public DataResult<List<KeyValue>> GetKeyValue()
+        {
+            List<KeyValue> keyValues = _sweetDal.GetAll().Select(s => new KeyValue { Key = s.SweetId, Value = s.Name }).ToList();
+            if (keyValues == null)
+                return new ErrorDataResult<List<KeyValue>>(keyValues);
+
+            return new SuccessDataResult<List<KeyValue>>(keyValues, Messages.GetAll("Tatlılar"));
+        }
+    }
 }

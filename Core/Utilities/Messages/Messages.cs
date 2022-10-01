@@ -13,5 +13,7 @@ namespace Core.Utilities.Messages
         public static string GetAll(string objectName) { return objectName+" ürünleriniz başarıyla getirili."; }
         public static string GetById(string objectName) { return objectName+ " ürünü başarıyla getirili."; }
         public static string GetByIdErr(string objectName) { return objectName+ " ürünü bulunamadı."; }
+        public static string NotWaitingErr(string objectName) { return objectName + " beklenmedik bir hata ile karşılaşıldı!"; }
+        public static string Deleting(string objectName) { return objectName + " başarıyla silindi."; }
     }
 }

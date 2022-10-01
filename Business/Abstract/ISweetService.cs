@@ -10,5 +10,7 @@ namespace Business.Abstract
         DataResult<Sweet> Update(Sweet sweet);
         DataResult<List<Sweet>> GetAll();
         DataResult<Sweet> GetById(int id);
+        DataResult<Sweet> RemoveSweet(int id);
+        DataResult<List<KeyValue>> GetKeyValue();
     }
 }

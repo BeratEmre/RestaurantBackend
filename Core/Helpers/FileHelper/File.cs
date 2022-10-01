@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Core.Helpers.FileHelper
 {
-    public static class FileCreate
+    public static class File
     {
         public static string FileSave(IFormFile formFile, string path)
         {
@@ -35,5 +35,6 @@ namespace Core.Helpers.FileHelper
                 return exp.Message.ToString();
             }
         }
+        public static bool FileRemove(string path) { System.IO.File.Delete(path); return !System.IO.File.Exists(path); }
     }
 }

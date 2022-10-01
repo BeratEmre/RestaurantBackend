@@ -12,5 +12,11 @@ namespace Core.Utilities.Enums
         {
             basket=10
         }
+        public enum ProductType
+        {
+            food = 1,
+            drink = 2,
+            sweet = 3
+        }
     }
 }
