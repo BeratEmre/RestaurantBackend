@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
 using Core.Helpers.FileHelper;
 using Entity.Entities;
 using Microsoft.AspNetCore.Hosting;
@@ -19,11 +20,13 @@ namespace API.Controllers
       
         IDrinkService _drinkService;
         public static IWebHostEnvironment _environment;
-   
-        public DrinksController(IDrinkService drinkService, IWebHostEnvironment environment)
+        private readonly IMapper _mapper;
+
+        public DrinksController(IDrinkService drinkService, IWebHostEnvironment environment, IMapper mapper)
         {
             _drinkService = drinkService;
             _environment = environment;
+            _mapper = mapper;
         }
 
         [HttpPost("add")]
@@ -32,8 +35,8 @@ namespace API.Controllers
             string imgUrl = "";
             if (formData.FormFile!=null)
                  imgUrl = Core.Helpers.FileHelper.File.FileSave(formData.FormFile, _environment.WebRootPath + "\\imgs\\drinks\\");
-
-            Drink drink = new Drink() { Description = formData.Description, DrinkId = formData.DrinkId, ImgUrl = imgUrl, Name = formData.Name, Price = formData.Price };
+            Drink drink = _mapper.Map<Drink>(formData);
+            drink.ImgUrl = imgUrl;
 
             var result = _drinkService.Add(drink);
             if (result.Success)

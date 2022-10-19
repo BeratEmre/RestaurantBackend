@@ -61,5 +61,15 @@ namespace Business.Concrete
                 return new SuccessDataResult<Menu>(removingMenu, Messages.Deleting(removingMenu.Name));
             return new ErrorDataResult<Menu>(removingMenu, Messages.NotWaitingErr(""));
         }
+
+        public bool AddStar(int id)
+        {
+            var menu=_menuDal.Get(m => m.MenuId == id);
+            if (menu == null || menu.MenuId < 1)
+                return false;
+            menu.IsHaveStar = true;
+            _menuDal.Update(menu);
+            return true;
+        }
     }
 }

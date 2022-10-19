@@ -4,14 +4,16 @@ using DataAccess.Concrete.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(Contexts))]
-    partial class ContextsModelSnapshot : ModelSnapshot
+    [Migration("20221005194939_menuAddedBasket")]
+    partial class menuAddedBasket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,9 +165,6 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("ImgUrl")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsHaveStar")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");

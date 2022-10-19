@@ -83,5 +83,15 @@ namespace API.Controllers
 
             return BadRequest(result);
         }
+
+        [HttpPost("AddStar")]
+        public IActionResult AddStar(int menuId)
+        {
+            var result = _menuService.AddStar(menuId);
+            if (result)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
     }
 }

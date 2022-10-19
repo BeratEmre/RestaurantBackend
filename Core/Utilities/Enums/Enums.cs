@@ -10,13 +10,14 @@ namespace Core.Utilities.Enums
     {
         public enum OrderStatus
         {
-            basket=10
+            basket = 10
         }
         public enum ProductType
         {
             food = 1,
             drink = 2,
-            sweet = 3
+            sweet = 3,
+            menu = 4
         }
     }
 }

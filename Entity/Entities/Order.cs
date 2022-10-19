@@ -14,6 +14,9 @@ namespace Entity.Entities
 
         public int SweetId { get; set; }
         public Sweet Sweet { get; set; }
+
+        public int MenuId { get; set; }
+        public Menu Menu { get; set; }
         public byte Status { get; set; }
         public byte Count { get; set; }
         public int UserId { get; set; }

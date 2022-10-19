@@ -25,7 +25,7 @@ namespace Business.Concrete
 
         public DataResult<Order> AddToBasket(Order order)
         {
-            Order oldOrder=_orderDal.Get(o => o.DrinkId == order.DrinkId && o.FoodId == order.FoodId && o.SweetId == order.SweetId &&o.Status == (byte)OrderStatus.basket);
+            Order oldOrder=_orderDal.Get(o => o.DrinkId == order.DrinkId && o.FoodId == order.FoodId && o.SweetId == order.SweetId && o.MenuId == order.MenuId && o.Status == (byte)OrderStatus.basket);
             if (oldOrder!=null)
             {
                 oldOrder.Count++;

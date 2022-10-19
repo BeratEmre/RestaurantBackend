@@ -1,3 +1,4 @@
+using AutoMapper;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -65,6 +66,7 @@ namespace API
             {
                 c.SwaggerDoc("SwaggerApi", new OpenApiInfo {Version="v1",Title="Swagger Api", Description="" });
             });
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
