@@ -71,5 +71,11 @@ namespace Business.Concrete
             _menuDal.Update(menu);
             return true;
         }
+
+        public DataResult<List<Menu>> GetStarMenus()
+        {
+            var starMenus=_menuDal.GetAll(m => m.IsHaveStar);
+            return new DataResult<List<Menu>>(starMenus,true, Messages.GetAll("Yıldızlı menü"));
+        }
     }
 }

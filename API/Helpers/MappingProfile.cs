@@ -12,11 +12,8 @@ namespace API.Helpers
         public MappingProfile()
         {
             CreateMap<DrinkFormData, Drink>().ReverseMap();
-            //CreateMap<VMPersonel, Personel>();
-            //CreateMap<Musteri, VMMusteri>();
-            //CreateMap<VMMusteri, Musteri>();
-            //CreateMap<Satis, VMSatis>();
-            //CreateMap<VMSatis, Satis>();
+            CreateMap<MenuFormData, Menu>().ReverseMap();
+
         }
     }
 }

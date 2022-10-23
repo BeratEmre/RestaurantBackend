@@ -13,6 +13,6 @@ namespace Business.Abstract
         DataResult<Menu> GetById(int id);
         DataResult<Menu> RemoveMenu(int id,string filePath);
         bool AddStar(int id);
-
+        DataResult<List<Menu>> GetStarMenus();
     }
 }

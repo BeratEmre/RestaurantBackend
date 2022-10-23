@@ -17,5 +17,6 @@ namespace Entity.Entities
         public Sweet Sweet { get; set; }
         public bool Selected { get; set; }
         public bool IsHaveStar { get; set; }
+        public short Order { get; set; }
     }
 }

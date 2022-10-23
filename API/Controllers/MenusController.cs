@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
 using Core.Helpers.FileHelper;
 using Entity.Entities;
 using Microsoft.AspNetCore.Hosting;
@@ -12,10 +13,12 @@ namespace API.Controllers
     {
         IMenuService _menuService;
         IWebHostEnvironment _environment;
-        public MenusController(IMenuService menuService, IWebHostEnvironment environment)
+        private readonly IMapper _mapper;
+        public MenusController(IMenuService menuService, IWebHostEnvironment environment, IMapper mapper)
         {
             _menuService = menuService;
             _environment = environment;
+            _mapper = mapper;
         }
 
         [HttpPost("add")]
@@ -25,7 +28,8 @@ namespace API.Controllers
             if (formData.FormFile != null)
                 imgUrl = Core.Helpers.FileHelper.File.FileSave(formData.FormFile, _environment.WebRootPath + "\\imgs\\menus\\");
 
-            Menu menu = new Menu() { FoodId = formData.FoodId, DrinkId=formData.DrinkId,SweetId=formData.SweetId, Description = formData.Description, ImgUrl = imgUrl, Name = formData.Name, Price = formData.Price };
+            Menu menu = _mapper.Map<Menu>(formData);
+            menu.ImgUrl = imgUrl;
 
             var result = _menuService.Add(menu);
             if (result.Success)
@@ -89,6 +93,16 @@ namespace API.Controllers
         {
             var result = _menuService.AddStar(menuId);
             if (result)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("GetStarMenus")]
+        public IActionResult GetStarMenus()
+        {
+            var result = _menuService.GetStarMenus();
+            if (result.Success)
                 return Ok(result);
 
             return BadRequest(result);
