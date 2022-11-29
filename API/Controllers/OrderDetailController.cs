@@ -6,18 +6,18 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrdersController : ControllerBase
+    public class OrderDetailController : ControllerBase
     {
-        IOrderService _orderService;
-        public OrdersController(IOrderService orderService)
+        IOrderDetailService _orderDetailService;
+        public OrderDetailController(IOrderDetailService orderDetailService)
         {
-            _orderService = orderService;
+            _orderDetailService = orderDetailService;
         }
 
         [HttpPost("addToBasket")]
-        public IActionResult AddToBasket(Order order)
+        public IActionResult AddToBasket(OrderDetail orderDetail)
         {
-            var result = _orderService.AddToBasket(order);
+            var result = _orderDetailService.AddToBasket(orderDetail);
             if (result.Success)
                 return Ok(result);
 
@@ -28,25 +28,27 @@ namespace API.Controllers
         [HttpGet("getBasket")]
         public IActionResult GetBasket()
         {
-            var result = _orderService.GetBaskests();
+            var result = _orderDetailService.GetBaskests();
             if (result.Success)
                 return Ok(result);
 
             return BadRequest(result); 
         }
+
         [HttpGet("GetBasketWithUserId")]
         public IActionResult GetBasketWithUserId(int userId)
         {
-            var result = _orderService.GetBaskestWithUserId(userId);
+            var result = _orderDetailService.GetBaskestWithUserId(userId);
             if (result.Success)
                 return Ok(result);
 
             return BadRequest(result);
         }
+
         [HttpPost("Delete")]
-        public IActionResult Delete(Order order)
+        public IActionResult Delete(OrderDetail orderDetail)
         {
-            var result = _orderService.Delete(order);
+            var result = _orderDetailService.Delete(orderDetail);
             if (result.Success)
                 return Ok(result);
 

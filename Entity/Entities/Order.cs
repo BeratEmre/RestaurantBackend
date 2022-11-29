@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using System;
 
 namespace Entity.Entities
 {
@@ -6,19 +7,15 @@ namespace Entity.Entities
     {
         public int OrderId { get; set; }
 
-        public int FoodId { get; set; }
-        public Food Food { get; set; }
-
-        public int DrinkId { get; set; }
-        public Drink Drink { get; set; }
-
-        public int SweetId { get; set; }
-        public Sweet Sweet { get; set; }
-
-        public int MenuId { get; set; }
-        public Menu Menu { get; set; }
-        public byte Status { get; set; }
-        public byte Count { get; set; }
         public int UserId { get; set; }
+
+        public DateTime MomentOfOrder { get; set; }
+
+        public byte Status { get; set; }
+
+        public int OrderDetailId { get; set; }
+        public OrderDetail OrderDetail { get; set; }
+
+        public double TotalAmount { get; set; }
     }
 }

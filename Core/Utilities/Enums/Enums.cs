@@ -8,9 +8,16 @@ namespace Core.Utilities.Enums
 {
     public class Enums
     {
+        public enum OrderDetailStatus
+        {
+            basket = 10,
+            onOrder = 20
+        }
         public enum OrderStatus
         {
-            basket = 10
+            gettingReady = 10,
+            completed = 20,
+            paid = 30
         }
         public enum ProductType
         {

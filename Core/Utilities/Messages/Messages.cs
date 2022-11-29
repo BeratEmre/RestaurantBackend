@@ -8,6 +8,12 @@ namespace Core.Utilities.Messages
 {
    public static class Messages
     {
+        public static string GetAllOrder = "Kullanıcının siparişleri başarıyla getirildi.";
+
+        public static string DonotHaveAnOrder = "Actif siparişiniz bulunmamaktadır.";
+
+        public static string GetAllOrders = "Siparişleriniz başarıyla getirildi.";
+
         public static string Add(string objectName) { return objectName+" ekleme işlemi başarıyla gerçekleşti."; }
         public static string Update(string objectName) { return objectName+" ürünü başarıyla güncellendi."; }
         public static string GetAll(string objectName) { return objectName+" ürünleriniz başarıyla getirili."; }

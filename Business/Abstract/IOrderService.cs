@@ -1,4 +1,5 @@
 ﻿using Core.Utilities.Results;
+using DataAccess.Migrations;
 using Entity.Entities;
 using System.Collections.Generic;
 
@@ -6,13 +7,11 @@ namespace Business.Abstract
 {
     public interface IOrderService
     {
-        Result Add(Order order);
-        DataResult<Order> AddToBasket(Order order);
-        DataResult<Order> Update(Order order);
+        Result Add(int userId);
+        DataResult<Order> Update(Order orderDetail);
         DataResult<List<Order>> GetAll();
-        DataResult<List<Order>> GetBaskests();
-        DataResult<List<BasketDto>> GetBaskestWithUserId(int userId);
         DataResult<Order> GetById(int id);
-        DataResult<byte> Delete(Order order);
+        DataResult<List<Order>> GetUserOrders(int userId);
+        DataResult<List<BasketDto>> GetActiveOrdersWithUserId(int userId);
     }
 }

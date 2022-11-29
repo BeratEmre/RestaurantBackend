@@ -4,6 +4,7 @@ using Core.Utilities.Messages;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Core.Utilities.Enums.Enums;
@@ -13,87 +14,78 @@ namespace Business.Concrete
     public class OrderManager : IOrderService
     {
         IOrderDal _orderDal;
-        public OrderManager(IOrderDal orderDal)
+        IOrderDetailDal _orderDetailDal;
+        public OrderManager(IOrderDal orderDal, IOrderDetailDal orderDetailDal)
         {
             _orderDal = orderDal;
+            _orderDetailDal= orderDetailDal;
         }
-        public Result Add(Order order)
+        public Result Add(int userId)
         {
-            _orderDal.Add(order);
-            return new Result(true, Messages.Add("Şipariş"));
-        }
+           var orderDetails = _orderDetailDal.GetBaskestWithUserId(userId, (byte)Enums.OrderDetailStatus.basket);
+            if (orderDetails==null || orderDetails.Count<1)            
+                return new Result(false, Messages.NotWaitingErr("Sipariş eklenirken"));
 
-        public DataResult<Order> AddToBasket(Order order)
-        {
-            Order oldOrder=_orderDal.Get(o => o.DrinkId == order.DrinkId && o.FoodId == order.FoodId && o.SweetId == order.SweetId && o.MenuId == order.MenuId && o.Status == (byte)OrderStatus.basket);
-            if (oldOrder!=null)
+            foreach (var orderDetail in orderDetails)
             {
-                oldOrder.Count++;
-                _orderDal.Update(oldOrder);
-                return new DataResult<Order>(oldOrder, true, Messages.Update("Sepet"));
+                Order addingOrder = new Order() { 
+                    MomentOfOrder=DateTime.Now,
+                    OrderDetailId= orderDetail.OrderDetailId,
+                    Status=(byte)Enums.OrderStatus.gettingReady,
+                    TotalAmount= orderDetail.Price*orderDetail.Count,
+                    UserId=userId
+                };
+                _orderDal.Add(addingOrder);
+                var updatingOrder=_orderDetailDal.Get(o => o.OrderDetailId == orderDetail.OrderDetailId);
+                updatingOrder.Status = (byte)Enums.OrderDetailStatus.onOrder;
+                _orderDetailDal.Update(updatingOrder);
             }
-            order.Count = 1;
-            order.Status = (byte)OrderStatus.basket;
-            _orderDal.Add(order);
-            return new DataResult<Order>(order, true, Messages.Add("Sepete"));
-        }
-
-        public DataResult<byte> Delete(Order order)
-        {
-            
-            Order oldOrder = _orderDal.Get(o => o.DrinkId == order.DrinkId && o.FoodId == order.FoodId && o.SweetId == order.SweetId && o.Status == order.Status);
-            if (oldOrder != null)
-            {
-                if (oldOrder.Count>1)
-                {
-                    oldOrder.Count--;
-                    _orderDal.Update(oldOrder);
-                    return new DataResult<byte>(oldOrder.Count, true, Messages.Update("Sepet"));
-                }
-                _orderDal.Delete(oldOrder);
-            }
-
- 
-            return new DataResult<byte>(0, true, Messages.Deleting("Sepet"));
+            return new Result(true, Messages.Add("Şipariş detayları"));
         }
 
         public DataResult<List<Order>> GetAll()
         {
-            List<Order> orders = _orderDal.GetAll();
-            if (orders == null)
-                return new ErrorDataResult<List<Order>>(orders);
+            List<Order> orderDetails = _orderDal.GetAll();
+            if (orderDetails == null)
+                return new ErrorDataResult<List<Order>>(orderDetails);
 
-            return new SuccessDataResult<List<Order>>(orders, Messages.GetAll("Şiparişinizdeki"));
-        }
-
-        public DataResult<List<Order>> GetBaskests()
-        {
-            List<Order> orders = _orderDal.GetAll(p => p.Status == 10);
-            if (orders == null)
-                return new ErrorDataResult<List<Order>>(orders);
-
-            return new SuccessDataResult<List<Order>>(orders, Messages.GetAll("Sepetinizdeki"));
-        }
-
-        public DataResult<List<BasketDto>> GetBaskestWithUserId(int userId)
-        {
-            List<BasketDto> orders = _orderDal.GetBaskestWithUserId(userId);
-
-            return new SuccessDataResult<List<BasketDto>>(orders, Messages.GetAll("Sipariş "));
+            return new SuccessDataResult<List<Order>>(orderDetails, Messages.GetAll("Şipariş detayları"));
         }
 
         public DataResult<Order> GetById(int id)
         {
-            Order order = _orderDal.Get(g => g.OrderId == id);
+            Order order = _orderDal.Get(g => g.OrderDetailId == id);
             if (order != null)
-                return new SuccessDataResult<Order>(order, Messages.GetById("Şipariş"));
+                return new SuccessDataResult<Order>(order, Messages.GetById("Şipariş detayları"));
             return new ErrorDataResult<Order>(Messages.GetByIdErr("Şipariş"));
         }
 
-        public DataResult<Order> Update(Order Order)
+        public DataResult<List<Order>> GetUserOrders(int userId)
         {
-            _orderDal.Update(Order);
-            return new SuccessDataResult<Order>(Order, Messages.Update("Şipariş"));
+            var orders=_orderDal.GetAll(o=>o.UserId== userId);
+            return new SuccessDataResult<List<Order>>(orders, Messages.GetAllOrder);
+        }
+
+        public DataResult<Order> Update(Order order)
+        {
+            _orderDal.Update(order);
+            return new SuccessDataResult<Order>(order, Messages.Update("Şipariş detayları"));
+        }
+
+        public DataResult<List<BasketDto>> GetActiveOrdersWithUserId(int userId)
+        {
+            var orders=_orderDal.GetAll(o => o.Status == (byte)Enums.OrderStatus.gettingReady || o.Status == (byte)Enums.OrderStatus.completed);
+            if (orders == null || orders.Count < 1)
+                return new ErrorDataResult<List<BasketDto>>(null, Messages.DonotHaveAnOrder);
+            List<BasketDto> basketDtos = new List<BasketDto>();
+            foreach (var order in orders)
+            {
+                BasketDto basket = new BasketDto();
+                basket=_orderDetailDal.GetBasketDtoWithOrderDetailId(order.OrderDetailId);
+                basketDtos.Add(basket);
+            }
+
+            return new SuccessDataResult<List<BasketDto>>(basketDtos, Messages.GetAllOrders);
         }
     }
 
