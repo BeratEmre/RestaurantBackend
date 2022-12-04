@@ -14,6 +14,8 @@ namespace Core.Utilities.Messages
 
         public static string GetAllOrders = "Siparişleriniz başarıyla getirildi.";
 
+        public static string GetAllOrderDtoList = "Siparişler başarıyla getirildi.";
+
         public static string Add(string objectName) { return objectName+" ekleme işlemi başarıyla gerçekleşti."; }
         public static string Update(string objectName) { return objectName+" ürünü başarıyla güncellendi."; }
         public static string GetAll(string objectName) { return objectName+" ürünleriniz başarıyla getirili."; }

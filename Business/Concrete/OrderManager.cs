@@ -87,6 +87,14 @@ namespace Business.Concrete
 
             return new SuccessDataResult<List<BasketDto>>(basketDtos, Messages.GetAllOrders);
         }
+
+        public DataResult<List<OrderDto>> GetOrderDto()
+        {
+            var orderDtos=_orderDal.GetOrderDto();
+            if (orderDtos == null)
+                return new ErrorDataResult<List<OrderDto>>(orderDtos, Messages.NotWaitingErr("Siparişler"));
+            return new SuccessDataResult<List<OrderDto>>(orderDtos, Messages.GetAllOrderDtoList);
+        }
     }
 
 }

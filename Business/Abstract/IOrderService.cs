@@ -11,7 +11,8 @@ namespace Business.Abstract
         DataResult<Order> Update(Order orderDetail);
         DataResult<List<Order>> GetAll();
         DataResult<Order> GetById(int id);
-        DataResult<List<Order>> GetUserOrders(int userId);
+        DataResult<List<Order>> GetUserOrders(int userId); 
         DataResult<List<BasketDto>> GetActiveOrdersWithUserId(int userId);
+        DataResult<List<OrderDto>> GetOrderDto();
     }
 }

@@ -53,6 +53,16 @@ namespace API.Controllers
 
             return BadRequest(result);
         }
-        
+
+        [HttpGet("GetOrderDtos")]
+        public IActionResult GetOrderDtos()
+        {
+            var result = _orderService.GetOrderDto();
+            if (result.Success)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
+
     }
 }
