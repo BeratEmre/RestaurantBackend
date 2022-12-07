@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Entity.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -63,6 +64,14 @@ namespace API.Controllers
 
             return BadRequest(result);
         }
-
+        
+        [HttpPost("GetFilterOrderDtos")]
+        public IActionResult GetFilterOrderDtos(Filter filter)
+        {
+            var orders=_orderService.GetOrderDtoWithFilter(filter);
+            if (orders.Success) 
+                return Ok(orders);
+            return BadRequest(orders);
+        }
     }
 }

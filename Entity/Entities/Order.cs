@@ -16,6 +16,6 @@ namespace Entity.Entities
         public int OrderDetailId { get; set; }
         public OrderDetail OrderDetail { get; set; }
 
-        public double TotalAmount { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 }

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Reflection;
+using System;
+using Core.Utilities.Enums;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -32,7 +34,7 @@ namespace DataAccess.Concrete.EntityFramework
                                                  Price = o.TotalAmount,
                                                  Status = o.Status,
                                                  TypeId = od.ProductType,
-                                                 TypeStr="Yiyecek",
+                                                 TypeStr = "Yiyecek",
                                                  UserId = od.UserId
                                              })?.ToList();
 
@@ -93,6 +95,125 @@ namespace DataAccess.Concrete.EntityFramework
                 return orderDtos;
             }
         }
+
+        public List<OrderDto> GetOrderDtoWithFilter(Filter filter)
+        {
+
+            using (var context = new Contexts())
+            {
+                var path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\imgs";
+                List<OrderDto> dto;
+
+                switch (filter.ProductType)
+                {
+                    case (byte)Enums.ProductType.food:
+                        dto = GetrderDtoFoods(filter, context);
+                        break;
+                    case (byte)Enums.ProductType.sweet:
+                        dto = GetrderDtoSweets(filter, context);
+                        break;
+                    case (byte)Enums.ProductType.drink:
+                        dto = GetrderDtoDrinks(filter, context);
+                        break;
+                    case (byte)Enums.ProductType.menu:
+                        dto = GetrderDtoMenus(filter, context);
+                        break;
+                    default:
+                        dto = GetrderDtoFoods(filter, context);
+                        dto.AddRange(GetrderDtoDrinks(filter, context));
+                        dto.AddRange(GetrderDtoSweets(filter, context));
+                        dto.AddRange(GetrderDtoMenus(filter, context));
+                        break;
+                }
+                return dto;
+            }
+        }
+
+        private List<OrderDto> GetrderDtoFoods(Filter filter, Contexts context)
+        {
+            return (from o in context.Orders
+                    join od in context.OrderDetails on o.OrderDetailId equals od.OrderDetailId
+                    join f in context.Foods on od.FoodId equals f.FoodId
+                    where od.FoodId > 0 && o.MomentOfOrder < filter.EndDate && o.MomentOfOrder > filter.StartDate
+                       && o.TotalAmount < filter.MaxPrice && o.TotalAmount > filter.MinPrice
+                    select new OrderDto
+                    {
+                        Count = od.Count,
+                        MomentOfOrder = o.MomentOfOrder,
+                        Name = f.Name,
+                        OrderDetailId = od.OrderDetailId,
+                        Price = o.TotalAmount,
+                        Status = o.Status,
+                        TypeId = od.ProductType,
+                        TypeStr = "Yiyecek",
+                        UserId = od.UserId
+                    })?.ToList();
+        }
+
+        private List<OrderDto> GetrderDtoDrinks(Filter filter, Contexts context)
+        {
+            return (from o in context.Orders
+                    join od in context.OrderDetails on o.OrderDetailId equals od.OrderDetailId
+                    join f in context.Drinks on od.DrinkId equals f.DrinkId
+                    where od.DrinkId > 0 && o.MomentOfOrder < filter.EndDate && o.MomentOfOrder > filter.StartDate
+                       && o.TotalAmount < filter.MaxPrice && o.TotalAmount > filter.MinPrice
+                    select new OrderDto
+                    {
+                        Count = od.Count,
+                        MomentOfOrder = o.MomentOfOrder,
+                        Name = f.Name,
+                        OrderDetailId = od.OrderDetailId,
+                        Price = o.TotalAmount,
+                        Status = o.Status,
+                        TypeId = od.ProductType,
+                        TypeStr = "İçecek",
+                        UserId = od.UserId
+                    })?.ToList();
+        }
+
+        private List<OrderDto> GetrderDtoSweets(Filter filter, Contexts context)
+        {
+            return (from o in context.Orders
+                    join od in context.OrderDetails on o.OrderDetailId equals od.OrderDetailId
+                    join f in context.Sweets on od.SweetId equals f.SweetId
+                    where od.SweetId > 0 && o.MomentOfOrder < filter.EndDate && o.MomentOfOrder > filter.StartDate
+                       && o.TotalAmount < filter.MaxPrice && o.TotalAmount > filter.MinPrice
+                    select new OrderDto
+                    {
+                        Count = od.Count,
+                        MomentOfOrder = o.MomentOfOrder,
+                        Name = f.Name,
+                        OrderDetailId = od.OrderDetailId,
+                        Price = o.TotalAmount,
+                        Status = o.Status,
+                        TypeId = od.ProductType,
+                        TypeStr = "Tatlı",
+                        UserId = od.UserId
+                    })?.ToList();
+        }
+
+        private List<OrderDto> GetrderDtoMenus(Filter filter, Contexts context)
+        {
+            return (from o in context.Orders
+                    join od in context.OrderDetails on o.OrderDetailId equals od.OrderDetailId
+                    join f in context.Menus on od.MenuId equals f.MenuId
+                    where od.MenuId > 0 && o.MomentOfOrder < filter.EndDate && o.MomentOfOrder > filter.StartDate
+                       && o.TotalAmount < filter.MaxPrice && o.TotalAmount > filter.MinPrice
+                    select new OrderDto
+                    {
+                        Count = od.Count,
+                        MomentOfOrder = o.MomentOfOrder,
+                        Name = f.Name,
+                        OrderDetailId = od.OrderDetailId,
+                        Price = o.TotalAmount,
+                        Status = o.Status,
+                        TypeId = od.ProductType,
+                        TypeStr = "Menü",
+                        UserId = od.UserId
+                    })?.ToList();
+        }
     }
 }
+
+
 

@@ -7,5 +7,6 @@ namespace DataAccess.Abstract
     public interface IOrderDal : IEntityRepository<Order>
     {
         List<OrderDto> GetOrderDto();
+        List<OrderDto> GetOrderDtoWithFilter(Filter filter);
     }
 }

@@ -10,7 +10,7 @@ namespace Entity.Entities
         public string Name { get; set; }
         public string TypeStr { get; set; }
         public short TypeId { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
         public int Count { get; set; }
         public DateTime MomentOfOrder { get; set; }
         public byte Status { get; set; }

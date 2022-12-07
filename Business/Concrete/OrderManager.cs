@@ -95,6 +95,14 @@ namespace Business.Concrete
                 return new ErrorDataResult<List<OrderDto>>(orderDtos, Messages.NotWaitingErr("Siparişler"));
             return new SuccessDataResult<List<OrderDto>>(orderDtos, Messages.GetAllOrderDtoList);
         }
+
+        public DataResult<List<OrderDto>> GetOrderDtoWithFilter(Filter filter)
+        {
+            var orderDtos = _orderDal.GetOrderDtoWithFilter(filter);
+            if (orderDtos == null)
+                return new ErrorDataResult<List<OrderDto>>(orderDtos, Messages.NotWaitingErr("Siparişler"));
+            return new SuccessDataResult<List<OrderDto>>(orderDtos, Messages.GetAllOrderDtoList);
+        }
     }
 
 }

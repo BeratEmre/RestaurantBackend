@@ -14,5 +14,6 @@ namespace Business.Abstract
         DataResult<List<Order>> GetUserOrders(int userId); 
         DataResult<List<BasketDto>> GetActiveOrdersWithUserId(int userId);
         DataResult<List<OrderDto>> GetOrderDto();
+        DataResult<List<OrderDto>> GetOrderDtoWithFilter(Filter filter);
     }
 }

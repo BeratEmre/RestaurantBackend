@@ -8,7 +8,7 @@ namespace Entity.Entities
         public int OrderDetailId { get; set; }
         public string Name { get; set; }
         public short Type { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
         public int Count { get; set; }
         public string ImgUrl { get; set; }
     }
