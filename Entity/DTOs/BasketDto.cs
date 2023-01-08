@@ -11,5 +11,6 @@ namespace Entity.Entities
         public decimal Price { get; set; }
         public int Count { get; set; }
         public string ImgUrl { get; set; }
+        public byte Status { get; set; }
     }
 }

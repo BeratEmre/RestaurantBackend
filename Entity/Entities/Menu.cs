@@ -4,7 +4,7 @@ namespace Entity.Entities
 {
     public class Menu : IEntity
     {
-        public int MenuId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string ImgUrl { get; set; }

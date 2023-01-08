@@ -4,7 +4,7 @@ namespace Entity.Entities
 {
     public class OrderDetail:IEntity
     {
-        public int OrderDetailId { get; set; }
+        public int Id { get; set; }
 
         public int FoodId { get; set; }
         public Food Food { get; set; }

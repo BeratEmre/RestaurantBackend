@@ -7,7 +7,7 @@ namespace Entity.Entities
     {
         public IFormFile FormFile { get; set; }
 
-        public int FoodId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string ImgUrl { get; set; }

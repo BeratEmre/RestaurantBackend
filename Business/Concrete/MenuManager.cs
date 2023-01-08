@@ -38,7 +38,7 @@ namespace Business.Concrete
         }
         public DataResult<Menu> GetById(int id)
         {
-            Menu Menu = _menuDal.Get(g => g.MenuId == id);
+            Menu Menu = _menuDal.Get(g => g.Id == id);
             if (Menu != null)
                 return new SuccessDataResult<Menu>(Menu, Messages.GetById("Menu"));
             return new ErrorDataResult<Menu>(Messages.GetByIdErr("Menu"));
@@ -52,7 +52,7 @@ namespace Business.Concrete
 
         public DataResult<Menu> RemoveMenu(int id, string filePath)
         {
-            Menu removingMenu = _menuDal.Get(d => d.MenuId == id);
+            Menu removingMenu = _menuDal.Get(d => d.Id == id);
             bool fileIsRemoved = true;
             if (!string.IsNullOrEmpty(removingMenu.ImgUrl))
                 fileIsRemoved = File.FileRemove(filePath + removingMenu.ImgUrl);
@@ -64,8 +64,8 @@ namespace Business.Concrete
 
         public bool AddStar(int id)
         {
-            var menu=_menuDal.Get(m => m.MenuId == id);
-            if (menu == null || menu.MenuId < 1)
+            var menu=_menuDal.Get(m => m.Id == id);
+            if (menu == null || menu.Id < 1)
                 return false;
             menu.IsHaveStar = true;
             _menuDal.Update(menu);

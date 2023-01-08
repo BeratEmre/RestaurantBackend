@@ -31,7 +31,7 @@ namespace Business.Concrete
 
         public DataResult<Category> GetById(int id)
         {
-            Category category = _categoryDal.Get(g => g.CategoryId == id);
+            Category category = _categoryDal.Get(g => g.Id == id);
             if (category != null)
                 return new SuccessDataResult<Category>(category, Messages.GetById("İçecek"));
             return new ErrorDataResult<Category>(Messages.GetByIdErr("İçecek"));

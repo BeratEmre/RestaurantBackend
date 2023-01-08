@@ -22,15 +22,15 @@ namespace DataAccess.Concrete.EntityFramework
                 List<OrderDto> orderDtos = new List<OrderDto>();
 
                 List<OrderDto> foodOrders = (from o in context.Orders
-                                             join od in context.OrderDetails on o.OrderDetailId equals od.OrderDetailId
-                                             join f in context.Foods on od.FoodId equals f.FoodId
+                                             join od in context.OrderDetails on o.OrderDetailId equals od.Id
+                                             join f in context.Foods on od.FoodId equals f.Id
                                              where od.FoodId > 0
                                              select new OrderDto
                                              {
                                                  Count = od.Count,
                                                  MomentOfOrder = o.MomentOfOrder,
                                                  Name = f.Name,
-                                                 OrderDetailId = od.OrderDetailId,
+                                                 OrderDetailId = od.Id,
                                                  Price = o.TotalAmount,
                                                  Status = o.Status,
                                                  TypeId = od.ProductType,
@@ -39,15 +39,15 @@ namespace DataAccess.Concrete.EntityFramework
                                              })?.ToList();
 
                 List<OrderDto> drinkOrders = (from o in context.Orders
-                                              join od in context.OrderDetails on o.OrderDetailId equals od.OrderDetailId
-                                              join d in context.Drinks on od.DrinkId equals d.DrinkId
+                                              join od in context.OrderDetails on o.OrderDetailId equals od.Id
+                                              join d in context.Drinks on od.DrinkId equals d.Id
                                               where od.DrinkId > 0
                                               select new OrderDto
                                               {
                                                   Count = od.Count,
                                                   MomentOfOrder = o.MomentOfOrder,
                                                   Name = d.Name,
-                                                  OrderDetailId = od.OrderDetailId,
+                                                  OrderDetailId = od.Id,
                                                   Price = o.TotalAmount,
                                                   Status = o.Status,
                                                   TypeId = od.ProductType,
@@ -56,15 +56,15 @@ namespace DataAccess.Concrete.EntityFramework
                                               })?.ToList();
 
                 List<OrderDto> sweetOrders = (from o in context.Orders
-                                              join od in context.OrderDetails on o.OrderDetailId equals od.OrderDetailId
-                                              join s in context.Sweets on od.SweetId equals s.SweetId
+                                              join od in context.OrderDetails on o.OrderDetailId equals od.Id
+                                              join s in context.Sweets on od.SweetId equals s.Id
                                               where od.SweetId > 0
                                               select new OrderDto
                                               {
                                                   Count = od.Count,
                                                   MomentOfOrder = o.MomentOfOrder,
                                                   Name = s.Name,
-                                                  OrderDetailId = od.OrderDetailId,
+                                                  OrderDetailId = od.Id,
                                                   Price = o.TotalAmount,
                                                   Status = o.Status,
                                                   TypeId = od.ProductType,
@@ -73,15 +73,15 @@ namespace DataAccess.Concrete.EntityFramework
                                               })?.ToList();
 
                 List<OrderDto> menuOrders = (from o in context.Orders
-                                             join od in context.OrderDetails on o.OrderDetailId equals od.OrderDetailId
-                                             join m in context.Menus on od.MenuId equals m.MenuId
+                                             join od in context.OrderDetails on o.OrderDetailId equals od.Id
+                                             join m in context.Menus on od.MenuId equals m.Id
                                              where od.MenuId > 0
                                              select new OrderDto
                                              {
                                                  Count = od.Count,
                                                  MomentOfOrder = o.MomentOfOrder,
                                                  Name = m.Name,
-                                                 OrderDetailId = od.OrderDetailId,
+                                                 OrderDetailId = od.Id,
                                                  Price = o.TotalAmount,
                                                  Status = o.Status,
                                                  TypeId = od.ProductType,
@@ -132,8 +132,8 @@ namespace DataAccess.Concrete.EntityFramework
         private List<OrderDto> GetrderDtoFoods(Filter filter, Contexts context)
         {
             return (from o in context.Orders
-                    join od in context.OrderDetails on o.OrderDetailId equals od.OrderDetailId
-                    join f in context.Foods on od.FoodId equals f.FoodId
+                    join od in context.OrderDetails on o.OrderDetailId equals od.Id
+                    join f in context.Foods on od.FoodId equals f.Id
                     where od.FoodId > 0 && o.MomentOfOrder < filter.EndDate && o.MomentOfOrder > filter.StartDate
                        && o.TotalAmount < filter.MaxPrice && o.TotalAmount > filter.MinPrice
                     select new OrderDto
@@ -141,7 +141,7 @@ namespace DataAccess.Concrete.EntityFramework
                         Count = od.Count,
                         MomentOfOrder = o.MomentOfOrder,
                         Name = f.Name,
-                        OrderDetailId = od.OrderDetailId,
+                        OrderDetailId = od.Id,
                         Price = o.TotalAmount,
                         Status = o.Status,
                         TypeId = od.ProductType,
@@ -153,8 +153,8 @@ namespace DataAccess.Concrete.EntityFramework
         private List<OrderDto> GetrderDtoDrinks(Filter filter, Contexts context)
         {
             return (from o in context.Orders
-                    join od in context.OrderDetails on o.OrderDetailId equals od.OrderDetailId
-                    join f in context.Drinks on od.DrinkId equals f.DrinkId
+                    join od in context.OrderDetails on o.OrderDetailId equals od.Id
+                    join f in context.Drinks on od.DrinkId equals f.Id
                     where od.DrinkId > 0 && o.MomentOfOrder < filter.EndDate && o.MomentOfOrder > filter.StartDate
                        && o.TotalAmount < filter.MaxPrice && o.TotalAmount > filter.MinPrice
                     select new OrderDto
@@ -162,7 +162,7 @@ namespace DataAccess.Concrete.EntityFramework
                         Count = od.Count,
                         MomentOfOrder = o.MomentOfOrder,
                         Name = f.Name,
-                        OrderDetailId = od.OrderDetailId,
+                        OrderDetailId = od.Id,
                         Price = o.TotalAmount,
                         Status = o.Status,
                         TypeId = od.ProductType,
@@ -174,8 +174,8 @@ namespace DataAccess.Concrete.EntityFramework
         private List<OrderDto> GetrderDtoSweets(Filter filter, Contexts context)
         {
             return (from o in context.Orders
-                    join od in context.OrderDetails on o.OrderDetailId equals od.OrderDetailId
-                    join f in context.Sweets on od.SweetId equals f.SweetId
+                    join od in context.OrderDetails on o.OrderDetailId equals od.Id
+                    join f in context.Sweets on od.SweetId equals f.Id
                     where od.SweetId > 0 && o.MomentOfOrder < filter.EndDate && o.MomentOfOrder > filter.StartDate
                        && o.TotalAmount < filter.MaxPrice && o.TotalAmount > filter.MinPrice
                     select new OrderDto
@@ -183,7 +183,7 @@ namespace DataAccess.Concrete.EntityFramework
                         Count = od.Count,
                         MomentOfOrder = o.MomentOfOrder,
                         Name = f.Name,
-                        OrderDetailId = od.OrderDetailId,
+                        OrderDetailId = od.Id,
                         Price = o.TotalAmount,
                         Status = o.Status,
                         TypeId = od.ProductType,
@@ -195,8 +195,8 @@ namespace DataAccess.Concrete.EntityFramework
         private List<OrderDto> GetrderDtoMenus(Filter filter, Contexts context)
         {
             return (from o in context.Orders
-                    join od in context.OrderDetails on o.OrderDetailId equals od.OrderDetailId
-                    join f in context.Menus on od.MenuId equals f.MenuId
+                    join od in context.OrderDetails on o.OrderDetailId equals od.Id
+                    join f in context.Menus on od.MenuId equals f.Id
                     where od.MenuId > 0 && o.MomentOfOrder < filter.EndDate && o.MomentOfOrder > filter.StartDate
                        && o.TotalAmount < filter.MaxPrice && o.TotalAmount > filter.MinPrice
                     select new OrderDto
@@ -204,7 +204,7 @@ namespace DataAccess.Concrete.EntityFramework
                         Count = od.Count,
                         MomentOfOrder = o.MomentOfOrder,
                         Name = f.Name,
-                        OrderDetailId = od.OrderDetailId,
+                        OrderDetailId = od.Id,
                         Price = o.TotalAmount,
                         Status = o.Status,
                         TypeId = od.ProductType,

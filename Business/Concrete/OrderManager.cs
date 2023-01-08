@@ -36,7 +36,7 @@ namespace Business.Concrete
                     UserId=userId
                 };
                 _orderDal.Add(addingOrder);
-                var updatingOrder=_orderDetailDal.Get(o => o.OrderDetailId == orderDetail.OrderDetailId);
+                var updatingOrder=_orderDetailDal.Get(o => o.Id == orderDetail.OrderDetailId);
                 updatingOrder.Status = (byte)Enums.OrderDetailStatus.onOrder;
                 _orderDetailDal.Update(updatingOrder);
             }
@@ -82,7 +82,16 @@ namespace Business.Concrete
             {
                 BasketDto basket = new BasketDto();
                 basket=_orderDetailDal.GetBasketDtoWithOrderDetailId(order.OrderDetailId);
-                basketDtos.Add(basket);
+                if (basketDtos.Count>0)
+                {
+                    var obj =basketDtos.FirstOrDefault(b => b.Name == basket.Name && b.ImgUrl==basket.ImgUrl);
+                    if (obj != null)
+                        obj.Count++;
+                    else
+                        basketDtos.Add(basket);
+                }
+                else
+                    basketDtos.Add(basket);
             }
 
             return new SuccessDataResult<List<BasketDto>>(basketDtos, Messages.GetAllOrders);

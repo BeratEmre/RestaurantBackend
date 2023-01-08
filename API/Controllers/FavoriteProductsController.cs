@@ -6,37 +6,27 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategorysController : ControllerBase
+    public class FavoriteProductsController : ControllerBase
     {
-        ICategoryService _categoryService;
-        public CategorysController(ICategoryService categoryService)
+        IFavoriteProductService _favoriteService;
+        public FavoriteProductsController(IFavoriteProductService favoriteService)
         {
-            _categoryService = categoryService;
+            _favoriteService = favoriteService;
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Category category)
+        public IActionResult Add(FavoriteProduct favoriteProduct)
         {
-            var result = _categoryService.Add(category);
+            var result = _favoriteService.Add(favoriteProduct);
             if (result.Success)
                 return Ok(result);
 
             return BadRequest(result);
         }
         [HttpPost("update")]
-        public IActionResult Update(Category category)
+        public IActionResult Update(FavoriteProduct favoriteProduct)
         {
-            var result = _categoryService.Update(category);
-            if (result.Success)
-                return Ok(result);
-
-            return BadRequest(result);
-        }
-
-        [HttpPost("getbyid")]
-        public IActionResult GetById(int id)
-        {
-            var result = _categoryService.GetById(id);
+            var result = _favoriteService.Update(favoriteProduct);
             if (result.Success)
                 return Ok(result);
 
@@ -46,11 +36,22 @@ namespace API.Controllers
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
-            var result = _categoryService.GetAll();
+            var result = _favoriteService.GetAll();
+            if (result.Success)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("GetTopx")]
+        public IActionResult GetTopx(int x)
+        {
+            var result = _favoriteService.GetTopx(x);
             if (result.Success)
                 return Ok(result);
 
             return BadRequest(result);
         }
     }
+
 }

@@ -25,7 +25,7 @@ namespace API.Controllers
             if (formData.FormFile != null)
                 imgUrl = Core.Helpers.FileHelper.File.FileSave(formData.FormFile, _environment.WebRootPath + "\\imgs\\sweets\\");
 
-            Sweet sweet = new Sweet() { SweetId = formData.SweetId, Description = formData.Description, ImgUrl = imgUrl, Name = formData.Name, Price = formData.Price };
+            Sweet sweet = new Sweet() { Id = formData.Id, Description = formData.Description, ImgUrl = imgUrl, Name = formData.Name, Price = formData.Price };
             var result = _sweetService.Add(sweet);
             if (result.Success)
                 return Ok(result);
@@ -39,7 +39,7 @@ namespace API.Controllers
             if (formData.FormFile != null)
                 imgUrl = Core.Helpers.FileHelper.File.FileSave(formData.FormFile, _environment.WebRootPath + "\\imgs\\sweets\\");
 
-            Sweet sweet = new Sweet() { SweetId = formData.SweetId, Description = formData.Description, ImgUrl = imgUrl, Name = formData.Name, Price = formData.Price };
+            Sweet sweet = new Sweet() { Id = formData.Id, Description = formData.Description, ImgUrl = imgUrl, Name = formData.Name, Price = formData.Price };
             var result = _sweetService.Update(sweet);
             if (result.Success)
                 return Ok(result);

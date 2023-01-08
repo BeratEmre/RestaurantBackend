@@ -32,7 +32,7 @@ namespace Business.Concrete
 
         public DataResult<Sweet> GetById(int id)
         {
-            Sweet sweet = _sweetDal.Get(g => g.SweetId == id);
+            Sweet sweet = _sweetDal.Get(g => g.Id == id);
             if (sweet != null)
                 return new SuccessDataResult<Sweet>(sweet, Messages.GetById("Tatlı"));
             return new ErrorDataResult<Sweet>(Messages.GetByIdErr("Tatlı"));
@@ -46,14 +46,14 @@ namespace Business.Concrete
 
         public DataResult<Sweet> RemoveFood(int id)
         {
-            Sweet removingSweet = _sweetDal.Get(d => d.SweetId == id);
+            Sweet removingSweet = _sweetDal.Get(d => d.Id == id);
             if (_sweetDal.Delete(removingSweet))
                 return new SuccessDataResult<Sweet>(removingSweet, Messages.Deleting(removingSweet.Name));
             return new ErrorDataResult<Sweet>(removingSweet, Messages.NotWaitingErr(""));
         }
         public DataResult<Sweet> RemoveSweet(int id)
         {
-            Sweet removingSweet = _sweetDal.Get(d => d.SweetId == id);
+            Sweet removingSweet = _sweetDal.Get(d => d.Id == id);
             if (_sweetDal.Delete(removingSweet))
                 return new SuccessDataResult<Sweet>(removingSweet, Messages.Deleting(removingSweet.Name));
             return new ErrorDataResult<Sweet>(removingSweet, Messages.NotWaitingErr(""));
@@ -61,7 +61,7 @@ namespace Business.Concrete
 
         public DataResult<List<KeyValue>> GetKeyValue()
         {
-            List<KeyValue> keyValues = _sweetDal.GetAll().Select(s => new KeyValue { Key = s.SweetId, Value = s.Name }).ToList();
+            List<KeyValue> keyValues = _sweetDal.GetAll().Select(s => new KeyValue { Key = s.Id, Value = s.Name }).ToList();
             if (keyValues == null)
                 return new ErrorDataResult<List<KeyValue>>(keyValues);
 

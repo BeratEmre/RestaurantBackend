@@ -102,7 +102,7 @@ namespace Business.Concrete
 
         public DataResult<OrderDetail> GetById(int id)
         {
-            OrderDetail orderDetail = _orderDetailDal.Get(g => g.OrderDetailId == id);
+            OrderDetail orderDetail = _orderDetailDal.Get(g => g.Id == id);
             if (orderDetail != null)
                 return new SuccessDataResult<OrderDetail>(orderDetail, Messages.GetById("Şipariş"));
             return new ErrorDataResult<OrderDetail>(Messages.GetByIdErr("Şipariş"));

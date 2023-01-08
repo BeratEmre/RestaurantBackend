@@ -40,7 +40,7 @@ namespace API.Controllers
             if (formData.FormFile != null)
                 imgUrl = Core.Helpers.FileHelper.File.FileSave(formData.FormFile, _environment.WebRootPath + "\\imgs\\foods\\");
 
-            Food food = new Food() {FoodId=formData.FoodId, Description = formData.Description, ImgUrl = imgUrl, Name = formData.Name, Price = formData.Price };
+            Food food = new Food() { Id = formData.Id, Description = formData.Description, ImgUrl = imgUrl, Name = formData.Name, Price = formData.Price };
 
             var result = _foodService.Update(food);
             if (result.Success)

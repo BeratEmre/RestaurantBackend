@@ -36,7 +36,7 @@ namespace Business.Concrete
 
         public DataResult<Drink> GetById(int id)
         {
-            Drink drink = _drinkDal.Get(g => g.DrinkId == id);
+            Drink drink = _drinkDal.Get(g => g.Id == id);
             if (drink != null)
                 return new SuccessDataResult<Drink>(drink, Messages.GetById("İçecek"));
             return new ErrorDataResult<Drink>(Messages.GetByIdErr("İçecek"));
@@ -44,7 +44,7 @@ namespace Business.Concrete
 
         public DataResult<Drink> RemoveDrink(int id)
         {
-            Drink removingDrink=_drinkDal.Get(d => d.DrinkId == id);
+            Drink removingDrink=_drinkDal.Get(d => d.Id == id);
             if (_drinkDal.Delete(removingDrink))
                 return new SuccessDataResult<Drink>(removingDrink, Messages.Deleting(removingDrink.Name));
             return new ErrorDataResult<Drink>(removingDrink, Messages.NotWaitingErr(""));
@@ -58,7 +58,7 @@ namespace Business.Concrete
 
         public DataResult<List<KeyValue>> GetKeyValue()
         {
-            List<KeyValue> keyValues = _drinkDal.GetAll().Select(s => new KeyValue { Key = s.DrinkId, Value = s.Name }).ToList();
+            List<KeyValue> keyValues = _drinkDal.GetAll().Select(s => new KeyValue { Key = s.Id, Value = s.Name }).ToList();
             if (keyValues == null)
                 return new ErrorDataResult<List<KeyValue>>(keyValues);
 

@@ -32,7 +32,7 @@ namespace Business.Concrete
 
         public DataResult<Food> GetById(int id)
         {
-            Food food = _foodDal.Get(g => g.FoodId == id);
+            Food food = _foodDal.Get(g => g.Id == id);
             if (food != null)
                 return new SuccessDataResult<Food>(food, Messages.GetById("Yiyecek"));
             return new ErrorDataResult<Food>(Messages.GetByIdErr("Yiyecek"));
@@ -45,14 +45,14 @@ namespace Business.Concrete
         }
         public DataResult<Food> RemoveFood(int id)
         {
-            Food removingFood = _foodDal.Get(d => d.FoodId == id);
+            Food removingFood = _foodDal.Get(d => d.Id == id);
             if (_foodDal.Delete(removingFood))
                 return new SuccessDataResult<Food>(removingFood, Messages.Deleting(removingFood.Name));
             return new ErrorDataResult<Food>(removingFood, Messages.NotWaitingErr(""));
         }
         public DataResult<List<KeyValue>> GetKeyValue()
         {
-            List<KeyValue> keyValues = _foodDal.GetAll().Select(s => new KeyValue { Key = s.FoodId, Value = s.Name }).ToList();
+            List<KeyValue> keyValues = _foodDal.GetAll().Select(s => new KeyValue { Key = s.Id, Value = s.Name }).ToList();
             if (keyValues == null)
                 return new ErrorDataResult<List<KeyValue>>(keyValues);
 

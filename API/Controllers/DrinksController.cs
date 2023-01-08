@@ -51,7 +51,7 @@ namespace API.Controllers
             if (formData.FormFile != null)
                 imgUrl = Core.Helpers.FileHelper.File.FileSave(formData.FormFile, _environment.WebRootPath + "\\imgs\\drinks\\");
 
-            Drink drink = new Drink() { Description = formData.Description, DrinkId = formData.DrinkId, ImgUrl = imgUrl, Name = formData.Name, Price = formData.Price };
+            Drink drink = new Drink() { Description = formData.Description, Id = formData.Id, ImgUrl = imgUrl, Name = formData.Name, Price = formData.Price };
 
 
             var result = _drinkService.Update(drink);

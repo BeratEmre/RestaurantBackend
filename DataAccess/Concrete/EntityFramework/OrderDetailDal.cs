@@ -16,19 +16,19 @@ namespace DataAccess.Concrete.EntityFramework
             {
                 List<BasketDto> baskets = new List<BasketDto>();
                 List<BasketDto> foods = context.Set<OrderDetail>().Where(o => o.FoodId > 0 && o.Status == status).Select(o =>
-                        new BasketDto { Count = o.Count, Id = o.FoodId, OrderDetailId = o.OrderDetailId, Name = o.Food.Name, Price = o.Food.Price, Type = (short)ProductType.food, ImgUrl = o.Food.ImgUrl }
+                        new BasketDto { Count = o.Count, Id = o.FoodId, OrderDetailId = o.Id, Name = o.Food.Name, Price = o.Food.Price, Type = (short)ProductType.food, ImgUrl = o.Food.ImgUrl }
                 ).ToList();
 
                 List<BasketDto> drinks = context.Set<OrderDetail>().Where(o => o.DrinkId > 0 && o.Status == status).Select(o =>
-                              new BasketDto { Count = o.Count, Id = o.DrinkId, OrderDetailId = o.OrderDetailId, Name = o.Drink.Name, Price = o.Drink.Price, Type = (short)ProductType.drink, ImgUrl = o.Drink.ImgUrl }
+                              new BasketDto { Count = o.Count, Id = o.DrinkId, OrderDetailId = o.Id, Name = o.Drink.Name, Price = o.Drink.Price, Type = (short)ProductType.drink, ImgUrl = o.Drink.ImgUrl }
                   ).ToList();
 
                 List<BasketDto> sweets = context.Set<OrderDetail>().Where(o => o.SweetId > 0 && o.Status == status).Select(o =>
-                          new BasketDto { Count = o.Count, Id = o.SweetId, OrderDetailId = o.OrderDetailId, Name = o.Sweet.Name, Price = o.Sweet.Price, Type = (short)ProductType.sweet, ImgUrl = o.Sweet.ImgUrl }
+                          new BasketDto { Count = o.Count, Id = o.SweetId, OrderDetailId = o.Id, Name = o.Sweet.Name, Price = o.Sweet.Price, Type = (short)ProductType.sweet, ImgUrl = o.Sweet.ImgUrl }
                   ).ToList();
 
                 List<BasketDto> menus = context.Set<OrderDetail>().Where(o => o.MenuId > 0 && o.Status == status).Select(o =>
-                          new BasketDto { Count = o.Count, Id = o.MenuId, OrderDetailId = o.OrderDetailId, Name = o.Menu.Name, Price = o.Menu.Price, Type = (short)ProductType.menu, ImgUrl = o.Menu.ImgUrl }
+                          new BasketDto { Count = o.Count, Id = o.MenuId, OrderDetailId = o.Id, Name = o.Menu.Name, Price = o.Menu.Price, Type = (short)ProductType.menu, ImgUrl = o.Menu.ImgUrl }
                   ).ToList();
 
                 baskets.AddRange(foods);
@@ -44,15 +44,15 @@ namespace DataAccess.Concrete.EntityFramework
         {
             using (var context = new Contexts())
             {
-                BasketDto foods = context.Set<OrderDetail>().Where(o => o.OrderDetailId == orderDetailId).Select(o =>
+                BasketDto foods = context.Set<OrderDetail>().Where(o => o.Id == orderDetailId).Select(o =>
 
                 o.ProductType == (byte)Enums.ProductType.food ?
-                    new BasketDto { Count = o.Count, Id = o.FoodId, OrderDetailId = o.OrderDetailId, Name = o.Food.Name, Price = o.Food.Price, Type = (short)ProductType.food, ImgUrl = o.Food.ImgUrl }
+                    new BasketDto { Count = o.Count, Id = o.FoodId, OrderDetailId = o.Id, Name = o.Food.Name, Price = o.Food.Price, Type = (short)ProductType.food, ImgUrl = o.Food.ImgUrl, Status=o.Status }
                     : o.ProductType == (byte)Enums.ProductType.drink ?
-                    new BasketDto { Count = o.Count, Id = o.DrinkId, OrderDetailId = o.OrderDetailId, Name = o.Drink.Name, Price = o.Drink.Price, Type = (short)ProductType.drink, ImgUrl = o.Drink.ImgUrl }
+                    new BasketDto { Count = o.Count, Id = o.DrinkId, OrderDetailId = o.Id, Name = o.Drink.Name, Price = o.Drink.Price, Type = (short)ProductType.drink, ImgUrl = o.Drink.ImgUrl, Status = o.Status }
                     : o.ProductType == (byte)Enums.ProductType.sweet?
-                    new BasketDto { Count = o.Count, Id = o.SweetId, OrderDetailId = o.OrderDetailId, Name = o.Sweet.Name, Price = o.Sweet.Price, Type = (short)ProductType.sweet, ImgUrl = o.Sweet.ImgUrl }
-                    : new BasketDto { Count = o.Count, Id = o.MenuId, OrderDetailId = o.OrderDetailId, Name = o.Menu.Name, Price = o.Menu.Price, Type = (short)ProductType.menu, ImgUrl = o.Menu.ImgUrl }
+                    new BasketDto { Count = o.Count, Id = o.SweetId, OrderDetailId = o.Id, Name = o.Sweet.Name, Price = o.Sweet.Price, Type = (short)ProductType.sweet, ImgUrl = o.Sweet.ImgUrl, Status = o.Status }
+                    : new BasketDto { Count = o.Count, Id = o.MenuId, OrderDetailId = o.Id, Name = o.Menu.Name, Price = o.Menu.Price, Type = (short)ProductType.menu, ImgUrl = o.Menu.ImgUrl, Status = o.Status }
                 ).DefaultIfEmpty().First();
                 return foods;
             }
