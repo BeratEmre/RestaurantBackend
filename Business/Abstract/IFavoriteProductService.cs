@@ -9,6 +9,6 @@ namespace Business.Abstract
         DataResult<FavoriteProduct> Add(FavoriteProduct favoriteProduct);
         DataResult<FavoriteProduct> Update(FavoriteProduct favoriteProduct);
         DataResult<List<FavoriteProduct>> GetAll();
-        DataResult<List<FavoriteProduct>> GetTopx(int x);        
+        DataResult<List<ProductCard>> GetTopx(int x);        
     }
 }

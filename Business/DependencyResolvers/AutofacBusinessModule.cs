@@ -18,6 +18,9 @@ namespace Business.DependencyResolvers
 
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<FavoriteProductManager>().As<IFavoriteProductService>().SingleInstance();
+            builder.RegisterType<FavoriteProductDal > ().As<IFavoriteProductDal>().SingleInstance();
+
             builder.RegisterType<CategoryManager>().As<ICategoryService>().SingleInstance();
             builder.RegisterType<CategoryDal>().As<ICategoryDal>().SingleInstance();
 
