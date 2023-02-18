@@ -13,7 +13,9 @@ namespace API.Helpers
         {
             CreateMap<DrinkFormData, Drink>().ReverseMap();
             CreateMap<MenuFormData, Menu>().ReverseMap();
-
+            CreateMap<Food, FoodVM>().ReverseMap();
+            CreateMap<Drink, DrinkVM>().ReverseMap();
+            CreateMap<Sweet, SweetVM>().ReverseMap();
         }
     }
 }

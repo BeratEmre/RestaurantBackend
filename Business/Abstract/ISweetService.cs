@@ -8,7 +8,7 @@ namespace Business.Abstract
     {
         Result Add(Sweet sweet);
         DataResult<Sweet> Update(Sweet sweet);
-        DataResult<List<Sweet>> GetAll();
+        DataResult<List<SweetVM>> GetAll();
         DataResult<Sweet> GetById(int id);
         DataResult<Sweet> RemoveSweet(int id);
         DataResult<List<KeyValue>> GetKeyValue();

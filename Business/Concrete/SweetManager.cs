@@ -1,4 +1,6 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
+using Core.Utilities.Enums;
 using Core.Utilities.Messages;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -11,9 +13,13 @@ namespace Business.Concrete
     public class SweetManager : ISweetService
     {
         ISweetDal _sweetDal;
-        public SweetManager(ISweetDal sweetDal)
+        IFavoriteProductDal _favoriteDal;
+        private readonly IMapper _mapper;
+        public SweetManager(ISweetDal sweetDal,IFavoriteProductDal favoriteProductDal, IMapper mapper)
         {
             _sweetDal = sweetDal;
+            _favoriteDal= favoriteProductDal;
+            _mapper = mapper;
         }
         public Result Add(Sweet sweet)
         {
@@ -21,13 +27,25 @@ namespace Business.Concrete
             return new Result(true, Messages.Add("Tatlı"));
         }
 
-        public DataResult<List<Sweet>> GetAll()
+        public DataResult<List<SweetVM>> GetAll()
         {
-            List<Sweet> sweet = _sweetDal.GetAll();
-            if (sweet == null)
-                return new ErrorDataResult<List<Sweet>>(sweet);
+            List<SweetVM> sweetVMs= new List<SweetVM>();
+            List<Sweet> sweets = _sweetDal.GetAll();
+            if (sweets == null)
+                return new ErrorDataResult<List<SweetVM>>(sweetVMs);
 
-            return new SuccessDataResult<List<Sweet>>(sweet, Messages.GetAll("Tatlı"));
+            var favorites = _favoriteDal.GetAll(x => x.ProductType == (byte)Enums.ProductType.sweet);
+            if (favorites != null && favorites.Count > 0 && sweets.Count > 0)
+            {
+                foreach (var sweet in sweets)
+                {
+                    var sweetVM = _mapper.Map<SweetVM>(sweet);
+                    sweetVM.IsHaveStar = favorites.Any(f => f.ProductId == sweet.Id);
+                    sweetVMs.Add(sweetVM);
+
+                }
+            }
+                    return new SuccessDataResult<List<SweetVM>>(sweetVMs, Messages.GetAll("Tatlı"));
         }
 
         public DataResult<Sweet> GetById(int id)

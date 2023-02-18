@@ -12,7 +12,7 @@ namespace Business.Abstract
     {
         DataResult<Drink> Add(Drink drink);
         DataResult<Drink> Update(Drink drink);
-        DataResult<List<Drink>> GetAll();
+        DataResult<List<DrinkVM>> GetAll();
         DataResult<Drink> GetById(int id);
         DataResult<Drink> RemoveDrink(int id);
         DataResult<List<KeyValue>> GetKeyValue();

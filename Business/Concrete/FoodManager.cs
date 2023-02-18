@@ -1,8 +1,11 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
+using Core.Utilities.Enums;
 using Core.Utilities.Messages;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Entities;
+using Microsoft.Data.SqlClient.Server;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,9 +14,14 @@ namespace Business.Concrete
     public class FoodManager : IFoodService
     {
         IFoodDal _foodDal;
-        public FoodManager(IFoodDal foodDal)
+        IFavoriteProductDal _favoriteDal;
+        private readonly IMapper _mapper;
+
+        public FoodManager(IFoodDal foodDal, IFavoriteProductDal favoriteDal, IMapper mapper)
         {
             _foodDal = foodDal;
+            _favoriteDal = favoriteDal;
+            _mapper = mapper;
         }
         public Result Add(Food food)
         {
@@ -21,13 +29,25 @@ namespace Business.Concrete
             return new Result(true, Messages.Add("Yiyecek"));
         }
 
-        public DataResult<List<Food>> GetAll()
+        public DataResult<List<FoodVM>> GetAll()
         {
+            List<FoodVM> foodsVMList=new List<FoodVM>();
             List<Food> foods = _foodDal.GetAll();
-            if (foods == null)
-                return new ErrorDataResult<List<Food>>(foods);
+            var favorites=_favoriteDal.GetAll(x => x.ProductType == (byte)Enums.ProductType.food);
+            if (favorites != null && favorites.Count > 0 && foods.Count > 0)
+            {
+                foreach (var food in foods)
+                {
+                    var foodsVM = _mapper.Map<FoodVM>(food);
+                    foodsVM.IsHaveStar = favorites.Any(f => f.ProductId == food.Id);
+                    foodsVMList.Add(foodsVM);
+                }       
+            }
 
-            return new SuccessDataResult<List<Food>>(foods, Messages.GetAll("Yiyecek"));
+            if (foods == null)
+                return new ErrorDataResult<List<FoodVM>>(foodsVMList);
+
+            return new SuccessDataResult<List<FoodVM>>(foodsVMList, Messages.GetAll("Yiyecek"));
         }
 
         public DataResult<Food> GetById(int id)

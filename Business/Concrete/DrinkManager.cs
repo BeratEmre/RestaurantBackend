@@ -1,4 +1,6 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
+using Core.Utilities.Enums;
 using Core.Utilities.Messages;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -14,9 +16,14 @@ namespace Business.Concrete
     public class DrinkManager : IDrinkService
     {
         IDrinkDal _drinkDal;
-        public DrinkManager(IDrinkDal drinkDal)
+        IFavoriteProductDal _favoriteDal;
+        private readonly IMapper _mapper;
+
+        public DrinkManager(IDrinkDal drinkDal, IFavoriteProductDal favoriteProductDal, IMapper mapper)
         {
             _drinkDal = drinkDal;
+            _favoriteDal= favoriteProductDal;
+            _mapper = mapper;
         }
         public DataResult<Drink> Add(Drink drink)
         {
@@ -25,13 +32,25 @@ namespace Business.Concrete
             return new DataResult<Drink>(result, true, Messages.Add("İçecek"));
         }
 
-        public DataResult<List<Drink>> GetAll()
+        public DataResult<List<DrinkVM>> GetAll()
         {
+            List<DrinkVM> drinkVMs= new List<DrinkVM>();
             List<Drink> drinks = _drinkDal.GetAll();
             if (drinks == null)
-                return new ErrorDataResult<List<Drink>>(drinks);
+                return new ErrorDataResult<List<DrinkVM>>(drinkVMs);
 
-            return new SuccessDataResult<List<Drink>>(drinks, Messages.GetAll("İçecek"));
+            var favorites = _favoriteDal.GetAll(x => x.ProductType == (byte)Enums.ProductType.drink);
+            if (favorites != null && favorites.Count > 0 && drinks.Count > 0)
+            {
+                foreach (var drink in drinks)
+                {
+                    var drinkVM = _mapper.Map<DrinkVM>(drink);
+                    drinkVM.IsHaveStar = favorites.Any(f => f.ProductId == drink.Id);
+                    drinkVMs.Add(drinkVM);
+                }
+            }
+
+            return new SuccessDataResult<List<DrinkVM>>(drinkVMs, Messages.GetAll("İçecek"));
         }
 
         public DataResult<Drink> GetById(int id)

@@ -8,7 +8,7 @@ namespace Business.Abstract
     {
         Result Add(Food food);
         DataResult<Food> Update(Food food);
-        DataResult<List<Food>> GetAll();
+        DataResult<List<FoodVM>> GetAll();
         DataResult<Food> GetById(int id);
         DataResult<Food> RemoveFood(int id);
         DataResult<List<KeyValue>> GetKeyValue();
