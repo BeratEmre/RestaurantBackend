@@ -6,7 +6,7 @@ namespace Business.Abstract
 {
     public interface ISweetService
     {
-        Result Add(Sweet sweet);
+        DataResult<SweetVM> Add(Sweet sweet);
         DataResult<Sweet> Update(Sweet sweet);
         DataResult<List<SweetVM>> GetAll();
         DataResult<Sweet> GetById(int id);

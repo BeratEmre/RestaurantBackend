@@ -25,11 +25,21 @@ namespace Business.Concrete
             _favoriteDal= favoriteProductDal;
             _mapper = mapper;
         }
-        public DataResult<Drink> Add(Drink drink)
+        public DataResult<DrinkVM> Add(Drink drink)
         {
-            _drinkDal.Add(drink);
-            Drink result = _drinkDal.Get(d => d.Description == drink.Description && d.Name == drink.Name && d.Price == drink.Price);
-            return new DataResult<Drink>(result, true, Messages.Add("İçecek"));
+            try
+            {
+
+                int id = _drinkDal.Add(drink);
+                Drink result = _drinkDal.Get(d => d.Id == id);
+                var drinkVM = _mapper.Map<DrinkVM>(result);
+
+                return new SuccessDataResult<DrinkVM>(drinkVM, Messages.Add("İçecek"));
+            }
+            catch (Exception)
+            {
+                return new ErrorDataResult<DrinkVM>(null, Messages.NotWaitingErr("içecek eklenirken"));                
+            }
         }
 
         public DataResult<List<DrinkVM>> GetAll()

@@ -15,21 +15,25 @@ namespace Business.Concrete
         ISweetDal _sweetDal;
         IFavoriteProductDal _favoriteDal;
         private readonly IMapper _mapper;
-        public SweetManager(ISweetDal sweetDal,IFavoriteProductDal favoriteProductDal, IMapper mapper)
+        public SweetManager(ISweetDal sweetDal, IFavoriteProductDal favoriteProductDal, IMapper mapper)
         {
             _sweetDal = sweetDal;
-            _favoriteDal= favoriteProductDal;
+            _favoriteDal = favoriteProductDal;
             _mapper = mapper;
         }
-        public Result Add(Sweet sweet)
+        public DataResult<SweetVM> Add(Sweet sweet)
         {
-            _sweetDal.Add(sweet);
-            return new Result(true, Messages.Add("Tatlı"));
+            int id = _sweetDal.Add(sweet);
+            if (id < 1)
+                return new ErrorDataResult<SweetVM>(null, Messages.NotWaitingErr("Tatlı eklenirken"));
+            var reobj = _sweetDal.Get(x => x.Id == id);
+            var sweetVM = _mapper.Map<SweetVM>(sweet);
+            return new SuccessDataResult<SweetVM>(sweetVM, Messages.Add("Tatlı"));
         }
 
         public DataResult<List<SweetVM>> GetAll()
         {
-            List<SweetVM> sweetVMs= new List<SweetVM>();
+            List<SweetVM> sweetVMs = new List<SweetVM>();
             List<Sweet> sweets = _sweetDal.GetAll();
             if (sweets == null)
                 return new ErrorDataResult<List<SweetVM>>(sweetVMs);
@@ -45,7 +49,7 @@ namespace Business.Concrete
 
                 }
             }
-                    return new SuccessDataResult<List<SweetVM>>(sweetVMs, Messages.GetAll("Tatlı"));
+            return new SuccessDataResult<List<SweetVM>>(sweetVMs, Messages.GetAll("Tatlı"));
         }
 
         public DataResult<Sweet> GetById(int id)

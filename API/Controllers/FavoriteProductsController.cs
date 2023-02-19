@@ -15,7 +15,7 @@ namespace API.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(FavoriteProduct favoriteProduct)
+        public IActionResult Add([FromForm] FavoriteProduct favoriteProduct)
         {
             var result = _favoriteService.Add(favoriteProduct);
             if (result.Success)
@@ -23,6 +23,17 @@ namespace API.Controllers
 
             return BadRequest(result);
         }
+
+        [HttpPost("delete")]
+        public IActionResult Delete([FromForm] FavoriteProduct favoriteProduct)
+        {
+            var result = _favoriteService.Delete(favoriteProduct);
+            if (result.Success)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
+
         [HttpPost("update")]
         public IActionResult Update(FavoriteProduct favoriteProduct)
         {

@@ -33,6 +33,16 @@ namespace Business.Concrete
 
         }
 
+        public DataResult<FavoriteProduct> Delete(FavoriteProduct favoriteProduct)
+        {
+            var reObj = _favoriteProductDal.Get(f => f.ProductType == favoriteProduct.ProductType && f.ProductId == favoriteProduct.ProductId);
+            bool isDeleted = _favoriteProductDal.Delete(reObj);
+            if(isDeleted)
+                return new SuccessDataResult<FavoriteProduct>(reObj, Messages.Add("Favori"));
+            return new ErrorDataResult<FavoriteProduct>(reObj, Messages.NotWaitingErr("Favori Ürün ilinirken"));
+
+        }
+
         public DataResult<List<FavoriteProduct>> GetAll()
         {
             return new SuccessDataResult<List<FavoriteProduct>>( _favoriteProductDal.GetAll(),Messages.GetAll("Favori"));

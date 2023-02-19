@@ -6,7 +6,7 @@ namespace Business.Abstract
 {
     public interface IFoodService
     {
-        Result Add(Food food);
+        DataResult<FoodVM> Add(Food food);
         DataResult<Food> Update(Food food);
         DataResult<List<FoodVM>> GetAll();
         DataResult<Food> GetById(int id);

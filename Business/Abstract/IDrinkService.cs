@@ -10,7 +10,7 @@ namespace Business.Abstract
 {
     public interface IDrinkService
     {
-        DataResult<Drink> Add(Drink drink);
+        DataResult<DrinkVM> Add(Drink drink);
         DataResult<Drink> Update(Drink drink);
         DataResult<List<DrinkVM>> GetAll();
         DataResult<Drink> GetById(int id);

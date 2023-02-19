@@ -23,10 +23,20 @@ namespace Business.Concrete
             _favoriteDal = favoriteDal;
             _mapper = mapper;
         }
-        public Result Add(Food food)
+        public DataResult<FoodVM> Add(Food food)
         {
-            _foodDal.Add(food);
-            return new Result(true, Messages.Add("Yiyecek"));
+            try
+            {
+                int id = _foodDal.Add(food);
+                var reObj=_foodDal.Get(x=> x.Id == id);
+                var foodVM = _mapper.Map<FoodVM>(reObj);
+                return new SuccessDataResult<FoodVM>(foodVM, Messages.Add("Yiyecek"));
+            }
+            catch (System.Exception)
+            {
+                return new ErrorDataResult<FoodVM>(null, Messages.NotWaitingErr("Yiyecek eklenirken"));
+            }
+          
         }
 
         public DataResult<List<FoodVM>> GetAll()
