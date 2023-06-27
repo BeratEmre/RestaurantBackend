@@ -3,13 +3,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace Entity.Entities
 {
-    public class SweetFormData : IEntity
+    public class SweetFormData : ProductBase
     {
         public IFormFile FormFile { get; set; }
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string ImgUrl { get; set; }
-        public decimal Price { get; set; }
     }
 }

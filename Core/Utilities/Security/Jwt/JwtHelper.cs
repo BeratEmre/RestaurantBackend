@@ -2,6 +2,7 @@
 using Core.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -60,6 +61,57 @@ namespace Core.Utilities.Security.Jwt
             claims.Add(new Claim("email", user.Email.ToString()));            
             claims.AddRoles(operationClaims.Select(c => c.Name).ToArray());
             return claims;
+        }
+
+        public List<OperationClaim> DecodeToken(string token)
+        {
+            ClaimsPrincipal claimsPrincipal = DecodeJwtToken(token);
+            List<OperationClaim> claims = new List<OperationClaim>();
+            if (claimsPrincipal != null)
+            {                
+                // Token decoded successfully
+                // Access the claims from the claimsPrincipal.Claims collection
+                foreach (Claim claim in claimsPrincipal.Claims.Where(x=>x.Type.IndexOf("role")!=-1))
+                {
+                    Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
+                    claims.Add(new OperationClaim { Name = claim.Value });
+                }
+
+                foreach (Claim claim in claimsPrincipal.Claims)
+                {
+                    Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
+                    //claims.Add(new OperationClaim { Name = claim.Value });
+                }
+            }
+            return claims;
+        }
+
+        private ClaimsPrincipal DecodeJwtToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true, // Set to false if you don't want to validate the token's signature
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenOptions.SecurityKey)),
+                ValidateIssuer = true, // Set to false if you don't want to validate the token's issuer
+                ValidIssuer = _tokenOptions.Issuer,
+                ValidateAudience = true, // Set to false if you don't want to validate the token's audience
+                ValidAudience = _tokenOptions.Audience,
+                // Additional validation parameters if needed
+            };
+
+            try
+            {
+                // Validate and decode the token
+                var claimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out _);
+                return claimsPrincipal;
+            }
+            catch (Exception ex)
+            {
+                // Token validation failed
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 }

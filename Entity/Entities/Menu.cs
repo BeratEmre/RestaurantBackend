@@ -2,13 +2,8 @@
 
 namespace Entity.Entities
 {
-    public class Menu : IEntity
+    public class Menu : ProductBase
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string ImgUrl { get; set; }
-        public decimal Price { get; set; }
         public int FoodId { get; set; }
         public virtual Food Food { get; set; }
         public int DrinkId { get; set; }

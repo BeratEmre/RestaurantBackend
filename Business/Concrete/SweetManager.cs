@@ -46,7 +46,6 @@ namespace Business.Concrete
                     var sweetVM = _mapper.Map<SweetVM>(sweet);
                     sweetVM.IsHaveStar = favorites.Any(f => f.ProductId == sweet.Id);
                     sweetVMs.Add(sweetVM);
-
                 }
             }
             return new SuccessDataResult<List<SweetVM>>(sweetVMs, Messages.GetAll("Tatlı"));

@@ -9,5 +9,7 @@ namespace DataAccess.Abstract
     public interface IFavoriteProductDal : IEntityRepository<FavoriteProduct>
     {
         List<FavoriteProduct> GetTopx(int x);
+        List<FavoriteProduct> GetRandomx(int x);
+        
     }
 }

@@ -4,6 +4,8 @@ using Core.Utilities.Results;
 using Core.Utilities.Security;
 using Core.Utilities.Security.Jwt;
 using Entity.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Business.Concrete
 {
@@ -66,6 +68,14 @@ namespace Business.Concrete
             var claims = _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims);
             return new SuccessDataResult<AccessToken>(accessToken, "Token oluşturuldu");
+        }
+
+        public IResult IsHaveAuthority(string token)
+        {
+            var claims=_tokenHelper.DecodeToken(token);
+            if (claims.Any(x=>x.Name=="Admin"))
+                return new SuccessResult( "Yetki getirildi");
+            return new ErrorResult();
         }
     }
 }

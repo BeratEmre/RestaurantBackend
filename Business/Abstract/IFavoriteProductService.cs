@@ -10,6 +10,7 @@ namespace Business.Abstract
         DataResult<FavoriteProduct> Delete(FavoriteProduct favoriteProduct);
         DataResult<FavoriteProduct> Update(FavoriteProduct favoriteProduct);
         DataResult<List<FavoriteProduct>> GetAll();
-        DataResult<List<ProductCard>> GetTopx(int x);        
+        DataResult<List<ProductCard>> GetTopx(int x);
+        DataResult<List<ProductCard>> GetRandomx(int x);
     }
 }

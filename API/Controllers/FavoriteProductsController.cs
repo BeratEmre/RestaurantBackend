@@ -63,6 +63,16 @@ namespace API.Controllers
 
             return BadRequest(result);
         }
+
+        [HttpGet("GetRandomx")]
+        public IActionResult GetRandomx(int x)
+        {
+            var result = _favoriteService.GetRandomx(x);
+            if (result.Success)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
     }
 
 }

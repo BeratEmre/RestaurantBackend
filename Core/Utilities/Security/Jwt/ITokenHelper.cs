@@ -8,5 +8,6 @@ namespace Core.Utilities.Security.Jwt
     public interface ITokenHelper
     {
         AccessToken CreateToken(User user,List<OperationClaim> operationClaims);
+        List<OperationClaim> DecodeToken(string token);
     }
 }

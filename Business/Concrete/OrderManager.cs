@@ -74,7 +74,7 @@ namespace Business.Concrete
 
         public DataResult<List<BasketDto>> GetActiveOrdersWithUserId(int userId)
         {
-            var orders=_orderDal.GetAll(o => o.Status == (byte)Enums.OrderStatus.gettingReady || o.Status == (byte)Enums.OrderStatus.completed);
+            var orders=_orderDal.GetAll(o => o.UserId==userId  && (o.Status == (byte)Enums.OrderStatus.gettingReady || o.Status == (byte)Enums.OrderStatus.completed));
             if (orders == null || orders.Count < 1)
                 return new ErrorDataResult<List<BasketDto>>(null, Messages.DonotHaveAnOrder);
             List<BasketDto> basketDtos = new List<BasketDto>();

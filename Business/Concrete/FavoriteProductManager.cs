@@ -47,7 +47,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<FavoriteProduct>>( _favoriteProductDal.GetAll(),Messages.GetAll("Favori"));
         }
-
+        
         public DataResult<List<ProductCard>> GetTopx(int x)
         {
             var topx = _favoriteProductDal.GetTopx(x);
@@ -66,6 +66,58 @@ namespace Business.Concrete
                         product.Description = food.Description;
                         product.Price = food.Price;
                         product.ImgUrl = "/foods/"+food.ImgUrl;
+                        break;
+
+                    case (byte)Enums.ProductType.menu:
+                        var menu = _menuDal.Get(f => f.Id == favProduct.ProductId);
+                        product.ProductId = menu.Id;
+                        product.Name = menu.Name;
+                        product.Description = menu.Description;
+                        product.Price = menu.Price;
+                        product.ImgUrl = "/menus/" + menu.ImgUrl;
+                        break;
+
+                    case (byte)Enums.ProductType.drink:
+                        var drink = _drinkDal.Get(f => f.Id == favProduct.ProductId);
+                        product.ProductId = drink.Id;
+                        product.Name = drink.Name;
+                        product.Description = drink.Description;
+                        product.Price = drink.Price;
+                        product.ImgUrl = "/drinks/" + drink.ImgUrl;
+                        break;
+
+                    case (byte)Enums.ProductType.sweet:
+                        var sweet = _sweetDal.Get(f => f.Id == favProduct.ProductId);
+                        product.ProductId = sweet.Id;
+                        product.Name = sweet.Name;
+                        product.Description = sweet.Description;
+                        product.Price = sweet.Price;
+                        product.ImgUrl = "/sweets/" + sweet.ImgUrl;
+                        break;
+                }
+                products.Add(product);
+            }
+            return new SuccessDataResult<List<ProductCard>>(products);
+        }
+
+        public DataResult<List<ProductCard>> GetRandomx(int x)
+        {
+            var randomx = _favoriteProductDal.GetRandomx(x);
+            List<ProductCard> products = new List<ProductCard>();
+            ProductCard product;
+            foreach (var favProduct in randomx)
+            {
+                product = new ProductCard();
+                product.ProductType = favProduct.ProductType;
+                switch (favProduct.ProductType)
+                {
+                    case (byte)Enums.ProductType.food:
+                        var food = _foodDal.Get(f => f.Id == favProduct.ProductId);
+                        product.ProductId = food.Id;
+                        product.Name = food.Name;
+                        product.Description = food.Description;
+                        product.Price = food.Price;
+                        product.ImgUrl = "/foods/" + food.ImgUrl;
                         break;
 
                     case (byte)Enums.ProductType.menu:

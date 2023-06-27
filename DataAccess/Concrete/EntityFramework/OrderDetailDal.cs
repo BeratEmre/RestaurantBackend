@@ -15,19 +15,19 @@ namespace DataAccess.Concrete.EntityFramework
             using (var context = new Contexts())
             {
                 List<BasketDto> baskets = new List<BasketDto>();
-                List<BasketDto> foods = context.Set<OrderDetail>().Where(o => o.FoodId > 0 && o.Status == status).Select(o =>
+                List<BasketDto> foods = context.Set<OrderDetail>().Where(o => o.FoodId > 0 && o.Status == status && o.UserId==userId ).Select(o =>
                         new BasketDto { Count = o.Count, Id = o.FoodId, OrderDetailId = o.Id, Name = o.Food.Name, Price = o.Food.Price, Type = (short)ProductType.food, ImgUrl = o.Food.ImgUrl }
                 ).ToList();
 
-                List<BasketDto> drinks = context.Set<OrderDetail>().Where(o => o.DrinkId > 0 && o.Status == status).Select(o =>
+                List<BasketDto> drinks = context.Set<OrderDetail>().Where(o => o.DrinkId > 0 && o.Status == status && o.UserId == userId).Select(o =>
                               new BasketDto { Count = o.Count, Id = o.DrinkId, OrderDetailId = o.Id, Name = o.Drink.Name, Price = o.Drink.Price, Type = (short)ProductType.drink, ImgUrl = o.Drink.ImgUrl }
                   ).ToList();
 
-                List<BasketDto> sweets = context.Set<OrderDetail>().Where(o => o.SweetId > 0 && o.Status == status).Select(o =>
+                List<BasketDto> sweets = context.Set<OrderDetail>().Where(o => o.SweetId > 0 && o.Status == status && o.UserId == userId ).Select(o =>
                           new BasketDto { Count = o.Count, Id = o.SweetId, OrderDetailId = o.Id, Name = o.Sweet.Name, Price = o.Sweet.Price, Type = (short)ProductType.sweet, ImgUrl = o.Sweet.ImgUrl }
                   ).ToList();
 
-                List<BasketDto> menus = context.Set<OrderDetail>().Where(o => o.MenuId > 0 && o.Status == status).Select(o =>
+                List<BasketDto> menus = context.Set<OrderDetail>().Where(o => o.MenuId > 0 && o.Status == status && o.UserId == userId).Select(o =>
                           new BasketDto { Count = o.Count, Id = o.MenuId, OrderDetailId = o.Id, Name = o.Menu.Name, Price = o.Menu.Price, Type = (short)ProductType.menu, ImgUrl = o.Menu.ImgUrl }
                   ).ToList();
 

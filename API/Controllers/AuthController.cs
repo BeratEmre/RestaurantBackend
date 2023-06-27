@@ -23,7 +23,7 @@ namespace API.Controllers
                 return BadRequest(userToLogin.Message);
 
             var result = _authService.CreateAccessToken(userToLogin.Data);
-            if (result.Success)            
+            if (result.Success)
                 return Ok(result);
 
             return BadRequest(result.Message);
@@ -46,6 +46,16 @@ namespace API.Controllers
             }
 
             return BadRequest(result.Message);
+        }
+
+        [HttpPost("bringauthority")]
+        public ActionResult BringAuthority(string token)
+        {
+            var result = _authService.IsHaveAuthority(token);
+            if (!result.Success)
+                return BadRequest(result.Message);
+
+            return Ok(result);
         }
     }
 }
