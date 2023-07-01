@@ -22,9 +22,9 @@ namespace Core.Utilities.Enums
         public enum ProductType
         {
             food = 1,
-            drink = 2,
-            sweet = 3,
-            menu = 4
+            drink = 10,
+            sweet = 20,
+            menu = 30
         }
     }
 }

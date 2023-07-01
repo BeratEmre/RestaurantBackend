@@ -22,7 +22,7 @@ namespace Business.Concrete
         public DrinkManager(IDrinkDal drinkDal, IFavoriteProductDal favoriteProductDal, IMapper mapper)
         {
             _drinkDal = drinkDal;
-            _favoriteDal= favoriteProductDal;
+            _favoriteDal = favoriteProductDal;
             _mapper = mapper;
         }
         public DataResult<DrinkVM> Add(Drink drink)
@@ -38,27 +38,26 @@ namespace Business.Concrete
             }
             catch (Exception)
             {
-                return new ErrorDataResult<DrinkVM>(null, Messages.NotWaitingErr("içecek eklenirken"));                
+                return new ErrorDataResult<DrinkVM>(null, Messages.NotWaitingErr("içecek eklenirken"));
             }
         }
 
         public DataResult<List<DrinkVM>> GetAll()
         {
-            List<DrinkVM> drinkVMs= new List<DrinkVM>();
+            List<DrinkVM> drinkVMs = new List<DrinkVM>();
             List<Drink> drinks = _drinkDal.GetAll();
             if (drinks == null)
                 return new ErrorDataResult<List<DrinkVM>>(drinkVMs);
 
             var favorites = _favoriteDal.GetAll(x => x.ProductType == (byte)Enums.ProductType.drink);
-            if (favorites != null && favorites.Count > 0 && drinks.Count > 0)
+
+            foreach (var drink in drinks)
             {
-                foreach (var drink in drinks)
-                {
-                    var drinkVM = _mapper.Map<DrinkVM>(drink);
-                    drinkVM.IsHaveStar = favorites.Any(f => f.ProductId == drink.Id);
-                    drinkVMs.Add(drinkVM);
-                }
+                var drinkVM = _mapper.Map<DrinkVM>(drink);
+                drinkVM.IsHaveStar = favorites.Any(f => f.ProductId == drink.Id);
+                drinkVMs.Add(drinkVM);
             }
+
 
             return new SuccessDataResult<List<DrinkVM>>(drinkVMs, Messages.GetAll("İçecek"));
         }
@@ -73,7 +72,7 @@ namespace Business.Concrete
 
         public DataResult<Drink> RemoveDrink(int id)
         {
-            Drink removingDrink=_drinkDal.Get(d => d.Id == id);
+            Drink removingDrink = _drinkDal.Get(d => d.Id == id);
             if (_drinkDal.Delete(removingDrink))
                 return new SuccessDataResult<Drink>(removingDrink, Messages.Deleting(removingDrink.Name));
             return new ErrorDataResult<Drink>(removingDrink, Messages.NotWaitingErr(""));

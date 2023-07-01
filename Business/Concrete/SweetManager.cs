@@ -39,15 +39,14 @@ namespace Business.Concrete
                 return new ErrorDataResult<List<SweetVM>>(sweetVMs);
 
             var favorites = _favoriteDal.GetAll(x => x.ProductType == (byte)Enums.ProductType.sweet);
-            if (favorites != null && favorites.Count > 0 && sweets.Count > 0)
+
+            foreach (var sweet in sweets)
             {
-                foreach (var sweet in sweets)
-                {
-                    var sweetVM = _mapper.Map<SweetVM>(sweet);
-                    sweetVM.IsHaveStar = favorites.Any(f => f.ProductId == sweet.Id);
-                    sweetVMs.Add(sweetVM);
-                }
+                var sweetVM = _mapper.Map<SweetVM>(sweet);
+                sweetVM.IsHaveStar = favorites.Any(f => f.ProductId == sweet.Id);
+                sweetVMs.Add(sweetVM);
             }
+
             return new SuccessDataResult<List<SweetVM>>(sweetVMs, Messages.GetAll("Tatlı"));
         }
 

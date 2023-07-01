@@ -24,6 +24,7 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         //public DbSet<Table> Tables { get; set; }
         public DbSet<FavoriteProduct> FavoriteProducts { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

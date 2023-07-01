@@ -28,7 +28,7 @@ namespace Business.Concrete
             try
             {
                 int id = _foodDal.Add(food);
-                var reObj=_foodDal.Get(x=> x.Id == id);
+                var reObj = _foodDal.Get(x => x.Id == id);
                 var foodVM = _mapper.Map<FoodVM>(reObj);
                 return new SuccessDataResult<FoodVM>(foodVM, Messages.Add("Yiyecek"));
             }
@@ -36,22 +36,20 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<FoodVM>(null, Messages.NotWaitingErr("Yiyecek eklenirken"));
             }
-          
+
         }
 
         public DataResult<List<FoodVM>> GetAll()
         {
-            List<FoodVM> foodsVMList=new List<FoodVM>();
+            List<FoodVM> foodsVMList = new List<FoodVM>();
             List<Food> foods = _foodDal.GetAll();
-            var favorites=_favoriteDal.GetAll(x => x.ProductType == (byte)Enums.ProductType.food);
-            if (favorites != null && favorites.Count > 0 && foods.Count > 0)
+            var favorites = _favoriteDal.GetAll(x => x.ProductType == (byte)Enums.ProductType.food);
+
+            foreach (var food in foods)
             {
-                foreach (var food in foods)
-                {
-                    var foodsVM = _mapper.Map<FoodVM>(food);
-                    foodsVM.IsHaveStar = favorites.Any(f => f.ProductId == food.Id);
-                    foodsVMList.Add(foodsVM);
-                }       
+                var foodsVM = _mapper.Map<FoodVM>(food);
+                foodsVM.IsHaveStar = favorites.Any(f => f.ProductId == food.Id);
+                foodsVMList.Add(foodsVM);
             }
 
             if (foods == null)

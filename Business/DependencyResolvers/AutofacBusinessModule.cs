@@ -18,6 +18,9 @@ namespace Business.DependencyResolvers
 
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<CommentManager>().As<ICommentService>().SingleInstance();
+            builder.RegisterType<CommentDal>().As<ICommentDal>().SingleInstance();
+
             builder.RegisterType<FavoriteProductManager>().As<IFavoriteProductService>().SingleInstance();
             builder.RegisterType<FavoriteProductDal > ().As<IFavoriteProductDal>().SingleInstance();
 

@@ -1,5 +1,4 @@
-﻿using Core.Entities;
-using System.IO;
+﻿using System.IO;
 
 namespace Entity.Entities
 {
