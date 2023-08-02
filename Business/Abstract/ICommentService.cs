@@ -8,8 +8,6 @@ namespace Business.Abstract
     {
         DataResult<Comment> Add(Comment comment);
         DataResult<Comment> Update(Comment comment);
-
         DataResult<List<Comment>> ListByProduct(ProductBase product);
-
     }
 }

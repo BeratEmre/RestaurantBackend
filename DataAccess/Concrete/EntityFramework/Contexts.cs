@@ -25,6 +25,7 @@ namespace DataAccess.Concrete.EntityFramework
         //public DbSet<Table> Tables { get; set; }
         public DbSet<FavoriteProduct> FavoriteProducts { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<RatedModel> Rateds { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

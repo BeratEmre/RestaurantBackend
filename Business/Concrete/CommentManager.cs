@@ -16,7 +16,6 @@ namespace Business.Concrete
         {
             _commentDal = commentDal;
         }
-
         
         public DataResult<Comment> Add(Comment comment)
         {

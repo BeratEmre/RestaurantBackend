@@ -6,6 +6,5 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class CommentDal : EntityRepositoryBase<Comment, Contexts>, ICommentDal
     {
-
     }
 }

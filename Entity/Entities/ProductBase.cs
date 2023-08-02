@@ -10,5 +10,6 @@ namespace Entity.Entities
         public string ImgUrl { get; set; }
         public decimal Price { get; set; }
         public byte ProductType { get; set; }
+        public double Rated { get; set; }
     }
 }

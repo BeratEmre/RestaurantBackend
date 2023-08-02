@@ -18,6 +18,9 @@ namespace Business.DependencyResolvers
 
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<RatedManager>().As<IRatedService>().SingleInstance();
+            builder.RegisterType<RatedDal>().As<IRatedDal>().SingleInstance();
+
             builder.RegisterType<CommentManager>().As<ICommentService>().SingleInstance();
             builder.RegisterType<CommentDal>().As<ICommentDal>().SingleInstance();
 

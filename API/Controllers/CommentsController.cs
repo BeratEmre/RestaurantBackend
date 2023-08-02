@@ -9,11 +9,12 @@ namespace API.Controllers
     public class CommentsController : ControllerBase
     {
         ICommentService _commentService;
+        IRatedService _ratedService;
 
-        public CommentsController(ICommentService commentService)
+        public CommentsController(ICommentService commentService, IRatedService ratedService)
         {
             _commentService = commentService;
-           
+            _ratedService = ratedService;
         }
 
         [HttpPost("ListByProdut")]
@@ -36,5 +37,14 @@ namespace API.Controllers
             return BadRequest(result);
         }
 
+        [HttpPost("AddRated")]
+        public IActionResult AddRated(RatedModel rated)
+        {
+            var result = _ratedService.Add(rated);
+            if (result.Success)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
     }
 }
